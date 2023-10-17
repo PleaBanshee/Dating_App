@@ -16,4 +16,12 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <EditorConfigFiles Remove="C:\Users\llewellyn\OneDrive\Desktop\COURSES\AngularAndDotNet\Dating_App\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="C:\Users\llewellyn\OneDrive\Desktop\COURSES\AngularAndDotNet\Dating_App\.editorconfig" />
+  </ItemGroup>
+
 </Project>
