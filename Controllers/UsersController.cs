@@ -1,14 +1,12 @@
 ﻿using Dating_App.Data;
 using Dating_App.Entities;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Dating_App.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class UsersController : ControllerBase
+    // Inherits from BaseApiController
+    public class UsersController : BaseApiController
     {
         private readonly DataContext _context;
 
