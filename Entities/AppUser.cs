@@ -6,4 +6,8 @@ public class AppUser
 
     #nullable enable
     public string? UserName { get; set; } // optional property
+
+    public byte[]? PasswordHash { get; set; }
+
+    public byte[]? PasswordSalt { get; set; }
 }
