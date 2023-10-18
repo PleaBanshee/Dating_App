@@ -2,7 +2,7 @@ using Dating_App.Data;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
-var CORS_PORT = "http://localhost:4200";
+var CORS_PORT = "https://localhost:4200";
 
 // Add services to the container.
 
