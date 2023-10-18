@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -9,23 +9,21 @@ import { Observable } from 'rxjs';
 })
 export class AppComponent implements OnInit {
   title: string = 'Dating App';
-  users: any;
+  users: any[] = [];
 
   constructor(private httpClient: HttpClient) {}
 
   ngOnInit(): void {
-    this.httpClient
-      .get<Observable<any>>('https://localhost:5000/api/users')
-      .subscribe({
-        next: (res) => {
-          this.users = res;
-        },
-        error: (err) => {
-          console.log(err);
-        },
-        complete: () => {
-          console.log('Users fetched successfully');
-        },
-      });
+    this.httpClient.get<any[]>('https://localhost:5000/api/users').subscribe({
+      next: (res) => {
+        this.users = res;
+      },
+      error: (err) => {
+        console.log(err);
+      },
+      complete: () => {
+        console.log('Users fetched successfully');
+      },
+    });
   }
 }
