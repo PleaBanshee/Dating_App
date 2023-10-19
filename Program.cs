@@ -1,4 +1,5 @@
 using Dating_App.Data;
+using Dating_App.Extensions;
 using Dating_App.Interfaces;
 using Dating_App.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -9,32 +10,12 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 var CORS_PORT = "https://localhost:4200";
 
-// Add services to the container.
+// Add services to the container. Check ApplicationServicesExtensions
+builder.Services.AddApplicationServices(builder.Configuration);
 
-// use SQLite as the database provider, and it's specifying the connection
-// details using a connection string from the application's configuration.
-builder.Services.AddDbContext<DataContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-// Token Service: JWTs
-builder.Services.AddScoped<ITokenService, TokenService>();
-
-// Config Service: JWTs
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).
-    AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["TokenKey"])),
-            ValidateIssuer = false,
-            ValidateAudience = false
-        };
-    });
+builder.Services.AddIdentityServices(builder.Configuration);
     
-
 builder.Services.AddControllers();
-builder.Services.AddCors(); // Cross-Origin Resource Sharing
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
