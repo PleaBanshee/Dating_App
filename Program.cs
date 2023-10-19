@@ -1,7 +1,10 @@
 using Dating_App.Data;
 using Dating_App.Interfaces;
 using Dating_App.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 var CORS_PORT = "https://localhost:4200";
@@ -15,6 +18,20 @@ builder.Services.AddDbContext<DataContext>(options =>
 
 // Token Service: JWTs
 builder.Services.AddScoped<ITokenService, TokenService>();
+
+// Config Service: JWTs
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).
+    AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["TokenKey"])),
+            ValidateIssuer = false,
+            ValidateAudience = false
+        };
+    });
+    
 
 builder.Services.AddControllers();
 builder.Services.AddCors(); // Cross-Origin Resource Sharing
@@ -33,6 +50,12 @@ if (app.Environment.IsDevelopment())
 
 // The order in which you add middleware is important!
 app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().WithOrigins(CORS_PORT));
+
+// this middleware is used to check if the request has a valid token
+app.UseAuthentication();
+
+// this middleware is used to check if the user is authorized to access a resource
+app.UseAuthorization();
 
 app.UseHttpsRedirection();
 
