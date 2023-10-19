@@ -1,12 +1,16 @@
-﻿namespace Dating_App.Entities;
+﻿using System.ComponentModel.DataAnnotations;
 
-public class AppUser
+namespace Dating_App.Entities
 {
-    public int Id { get; set; }
+    public class AppUser
+    {
+        public int Id { get; set; }
 
-    public string UserName { get; set; } // optional property
+        [Required]
+        public string UserName { get; set; } // optional property
 
-    public byte[] PasswordHash { get; set; }
+        public byte[] PasswordHash { get; set; }
 
-    public byte[] PasswordSalt { get; set; }
+        public byte[] PasswordSalt { get; set; }
+    }
 }
