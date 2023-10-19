@@ -1,12 +1,14 @@
 ﻿using Dating_App.Data;
 using Dating_App.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Dating_App.Controllers
 {
-    // Inherits from BaseApiController
-    public class UsersController : BaseApiController
+    
+    [Authorize] // Requires authentication for all methods in this controller
+    public class UsersController : BaseApiController // Inherits from BaseApiController
     {
         private readonly DataContext _context;
 
@@ -15,6 +17,7 @@ namespace Dating_App.Controllers
             _context = context;
         }
 
+        [AllowAnonymous] // Allows non-authenticated users to access this method
         [HttpGet] // api/users
         public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers()
         {
