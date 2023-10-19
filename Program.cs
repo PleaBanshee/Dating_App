@@ -1,4 +1,6 @@
 using Dating_App.Data;
+using Dating_App.Interfaces;
+using Dating_App.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +12,9 @@ var CORS_PORT = "https://localhost:4200";
 // details using a connection string from the application's configuration.
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Token Service: JWTs
+builder.Services.AddScoped<ITokenService, TokenService>();
 
 builder.Services.AddControllers();
 builder.Services.AddCors(); // Cross-Origin Resource Sharing
