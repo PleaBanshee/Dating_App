@@ -2,9 +2,7 @@ using Dating_App.Data;
 using Dating_App.Extensions;
 using Dating_App.Interfaces;
 using Dating_App.Services;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);

@@ -1,5 +1,7 @@
-<h1>{{ title }}</h1>
+<app-nav-bar [title]="title"></app-nav-bar>
 
-<ul>
-  <li *ngFor="let user of users">{{ user.userName }}</li>
-</ul>
+<div class="main container mt-3">
+  <ul>
+    <li *ngFor="let user of users">{{ user.userName.toUpperCase() }}</li>
+  </ul>
+</div>
