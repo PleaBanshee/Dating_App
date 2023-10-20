@@ -26,20 +26,14 @@
           <li class="nav-item">
             <a class="nav-link active text-white mouse-pointer"> Messages </a>
           </li>
-          <li class="nav-item">
-            <a
-              class="nav-link active text-white mouse-pointer"
-              (click)="logout()"
-            >
-              Logout
-            </a>
-          </li>
         </ul>
-        <div class="dropdown dropdown-padding" *ngIf="loggedIn">
-          <a class="dropdown-toggle text-light"
+        <div class="dropdown dropdown-padding" *ngIf="loggedIn" dropdown>
+          <a
+            class="dropdown-toggle text-light text-decoration-none"
+            dropdownToggle
             >Welcome {{ user.username.toUpperCase() }}</a
           >
-          <div class="dropdown-menu">
+          <div class="dropdown-menu" *dropdownMenu>
             <a class="dropdown-item">Edit Profile</a>
             <a class="dropdown-item" (click)="logout()">Logout</a>
           </div>
