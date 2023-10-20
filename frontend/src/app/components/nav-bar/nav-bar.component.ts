@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { AccountService } from 'src/app/services/account.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -7,11 +8,24 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class NavBarComponent implements OnInit {
   @Input() title: string = '';
-  model: any = {};
+  user: any = {};
+  loggedIn: boolean = false;
+
+  constructor(private accountServive: AccountService) {}
 
   ngOnInit(): void {}
 
   login() {
-    console.log(this.model);
+    this.accountServive.login(this.user).subscribe({
+      next: (res) => {
+        this.user = res;
+        debugger;
+        this.loggedIn = true;
+        debugger;
+      },
+      error: (err) => {
+        console.log(err.error);
+      },
+    });
   }
 }
