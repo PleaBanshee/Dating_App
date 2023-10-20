@@ -41,14 +41,23 @@
             </ul>
           </li>
         </ul>
-        <form class="d-flex w-50">
+        <form
+          #loginForm="ngForm"
+          class="d-flex w-50"
+          (ngSubmit)="login()"
+          autocomplete="off"
+        >
           <input
+            name="username"
+            [(ngModel)]="model.username"
             class="form-control me-2"
             type="text"
             placeholder="Username"
             aria-label="Search"
           />
           <input
+            name="password"
+            [(ngModel)]="model.password"
             class="form-control me-2"
             type="text"
             placeholder="Password"
