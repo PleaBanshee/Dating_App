@@ -1,4 +1,12 @@
 .nav-container {
+  .mouse-pointer {
+    cursor: pointer;
+  }
+
+  .form-padding {
+    padding-left: 50%;
+  }
+
   button.navbar-toggler.border-light {
     border-width: 2px;
   }

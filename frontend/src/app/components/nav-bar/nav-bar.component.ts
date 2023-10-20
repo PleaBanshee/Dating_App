@@ -19,13 +19,15 @@ export class NavBarComponent implements OnInit {
     this.accountServive.login(this.user).subscribe({
       next: (res) => {
         this.user = res;
-        debugger;
         this.loggedIn = true;
-        debugger;
       },
       error: (err) => {
         console.log(err.error);
       },
     });
+  }
+
+  logout() {
+    this.loggedIn = false;
   }
 }
