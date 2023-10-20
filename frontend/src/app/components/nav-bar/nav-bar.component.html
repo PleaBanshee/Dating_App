@@ -14,7 +14,7 @@
         <span class="navbar-toggler-icon navbar-dark"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0" *ngIf="loggedIn">
           <li class="nav-item">
             <a class="nav-link active text-white" aria-current="page" href="#"
               >Matches</a
@@ -23,27 +23,31 @@
           <li class="nav-item">
             <a class="nav-link text-white" href="#">Lists</a>
           </li>
-          <li class="nav-item dropdown">
+          <li class="nav-item">
+            <a class="nav-link active text-white mouse-pointer"> Messages </a>
+          </li>
+          <li class="nav-item">
             <a
-              class="nav-link dropdown-toggle text-white"
-              href="#"
-              role="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
+              class="nav-link active text-white mouse-pointer"
+              (click)="logout()"
             >
-              Messages
+              Logout
             </a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
-              <li><hr class="dropdown-divider" /></li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
-            </ul>
           </li>
         </ul>
+        <div class="dropdown dropdown-padding" *ngIf="loggedIn">
+          <a class="dropdown-toggle text-light"
+            >Welcome {{ user.username.toUpperCase() }}</a
+          >
+          <div class="dropdown-menu">
+            <a class="dropdown-item">Edit Profile</a>
+            <a class="dropdown-item" (click)="logout()">Logout</a>
+          </div>
+        </div>
         <form
+          *ngIf="!loggedIn"
           #loginForm="ngForm"
-          class="d-flex w-50"
+          class="d-flex w-100 form-padding"
           (ngSubmit)="login()"
           autocomplete="off"
         >
@@ -59,7 +63,7 @@
             name="password"
             [(ngModel)]="user.password"
             class="form-control me-2"
-            type="text"
+            type="password"
             placeholder="Password"
             aria-label="Search"
           />
