@@ -19,7 +19,21 @@ export class AccountService {
       .post<User>(`${Constants.BASE_URL}/account/login`, user)
       .pipe(
         map((res: User) => {
+          console.log(res);
           const currentUser = res;
+          if (currentUser) {
+            localStorage.setItem('user', JSON.stringify(currentUser));
+            this.currentUserSource.next(currentUser);
+          }
+        })
+      );
+  }
+
+  register(user: any) {
+    return this.httpClient
+      .post<User>(`${Constants.BASE_URL}/account/register`, user)
+      .pipe(
+        map((currentUser: User) => {
           if (currentUser) {
             localStorage.setItem('user', JSON.stringify(currentUser));
             this.currentUserSource.next(currentUser);

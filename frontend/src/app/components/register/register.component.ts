@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { AccountService } from 'src/app/services/account.service';
 
 @Component({
   selector: 'app-register',
@@ -6,12 +7,20 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent {
-  @Input() users: any; // Parent to Child data sharing
   @Output() cancelRegister = new EventEmitter<boolean>(); // Child to Parent data sharing
   user: any = {};
 
+  constructor(private accountService: AccountService) {}
+
   register() {
-    console.log(this.user);
+    this.accountService.register(this.user).subscribe({
+      next: () => {
+        this.cancel();
+      },
+      error: (err) => {
+        console.log(err.error);
+      },
+    });
   }
 
   cancel() {
