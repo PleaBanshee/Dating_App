@@ -39,7 +39,7 @@
           <a
             class="dropdown-toggle text-light text-decoration-none"
             dropdownToggle
-            >Welcome {{ user.username?.toUpperCase() ?? "User" }}</a
+            >Welcome {{ accountService.getUserName() ?? "User" }}</a
           >
           <div class="dropdown-menu" *dropdownMenu>
             <a class="dropdown-item">Edit Profile</a>
