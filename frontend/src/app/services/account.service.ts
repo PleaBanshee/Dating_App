@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Constants } from '../constants/constants';
+import { Constants } from '../constants/Constants';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, map } from 'rxjs';
 import { User } from '../models/user';

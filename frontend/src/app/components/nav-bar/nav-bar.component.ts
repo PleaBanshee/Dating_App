@@ -1,6 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { User } from 'src/app/models/user';
+import { Component, Input } from '@angular/core';
 import { AccountService } from 'src/app/services/account.service';
 
 @Component({
@@ -8,13 +6,11 @@ import { AccountService } from 'src/app/services/account.service';
   templateUrl: './nav-bar.component.html',
   styleUrls: ['./nav-bar.component.scss'],
 })
-export class NavBarComponent implements OnInit {
+export class NavBarComponent {
   @Input() title: string = '';
   user: any = {};
 
   constructor(public accountService: AccountService) {}
-
-  ngOnInit(): void {}
 
   login() {
     this.accountService.login(this.user).subscribe({
