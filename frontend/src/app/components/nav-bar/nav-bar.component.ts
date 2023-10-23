@@ -18,7 +18,9 @@ export class NavBarComponent implements OnInit {
 
   login() {
     this.accountService.login(this.user).subscribe({
-      next: (res) => {},
+      next: (res) => {
+        console.log(`User: ${res}`);
+      },
       error: (err) => {
         console.log(err.error);
       },
