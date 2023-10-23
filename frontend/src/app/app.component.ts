@@ -9,7 +9,6 @@ import { User } from './models/user';
 })
 export class AppComponent implements OnInit {
   title: string = 'Dating App';
-  users: any;
 
   constructor(private accountService: AccountService) {}
 
