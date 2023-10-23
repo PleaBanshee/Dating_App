@@ -42,6 +42,16 @@ export class AccountService {
       );
   }
 
+  getUserName() {
+    const obj = localStorage.getItem('user');
+    if (obj) {
+      const username = JSON.parse(obj).username;
+      return username.toUpperCase();
+    } else {
+      console.log('Local storage does not contain user data');
+    }
+  }
+
   setCurrentUser(user: User) {
     this.currentUserSource.next(user);
   }
