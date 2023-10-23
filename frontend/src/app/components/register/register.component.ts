@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-register',
@@ -6,7 +6,8 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent {
-  @Input() users: any;
+  @Input() users: any; // Parent to Child data sharing
+  @Output() cancelRegister = new EventEmitter<boolean>(); // Child to Parent data sharing
   user: any = {};
 
   register() {
@@ -14,6 +15,6 @@ export class RegisterComponent {
   }
 
   cancel() {
-    console.log(`Cancelled`);
+    this.cancelRegister.emit(false);
   }
 }
