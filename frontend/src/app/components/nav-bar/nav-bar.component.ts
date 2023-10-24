@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { AccountService } from 'src/app/services/account.service';
 
 @Component({
@@ -11,16 +12,32 @@ export class NavBarComponent {
   @Input() title: string = '';
   user: any = {};
 
-  constructor(public accountService: AccountService, private router: Router) {}
+  constructor(
+    public accountService: AccountService,
+    private router: Router,
+    private toaster: ToastrService
+  ) {}
 
   login() {
     this.accountService.login(this.user).subscribe({
       next: (res) => {
         console.log(`User: ${res}`);
         this.router.navigateByUrl('/members');
+        this.toaster.success('Logged in successfully', 'SUCCESS', {
+          closeButton: true,
+          timeOut: 10000,
+          easing: 'linear',
+          positionClass: 'toast-top-center',
+        });
       },
       error: (err) => {
         console.log(err.error);
+        this.toaster.error(`${err.error}`, 'ERROR', {
+          closeButton: true,
+          timeOut: 10000,
+          easing: 'linear',
+          positionClass: 'toast-top-center',
+        });
       },
     });
   }
