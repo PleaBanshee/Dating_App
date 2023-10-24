@@ -14,35 +14,36 @@
         <span class="navbar-toggler-icon navbar-dark"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <!-- emits latest value of currentUser$ -->
-        <!-- *ngIf="accountService.currentUser$ | async" -->
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a
-              class="nav-link text-white"
-              aria-current="page"
-              routerLink="/members"
-              routerLinkActive="active"
-              >Matches</a
-            >
-          </li>
-          <li class="nav-item">
-            <a
-              class="nav-link text-white"
-              routerLink="/lists"
-              routerLinkActive="active"
-              >Lists</a
-            >
-          </li>
-          <li class="nav-item">
-            <a
-              class="nav-link text-white mouse-pointer"
-              routerLink="/messages"
-              routerLinkActive="active"
-            >
-              Messages
-            </a>
-          </li>
+          <!-- emits latest value of currentUser$ -->
+          <ng-container *ngIf="accountService.currentUser$ | async">
+            <li class="nav-item">
+              <a
+                class="nav-link text-white"
+                aria-current="page"
+                routerLink="/members"
+                routerLinkActive="active"
+                >Matches</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link text-white"
+                routerLink="/lists"
+                routerLinkActive="active"
+                >Lists</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link text-white mouse-pointer"
+                routerLink="/messages"
+                routerLinkActive="active"
+              >
+                Messages
+              </a>
+            </li>
+          </ng-container>
         </ul>
         <div
           class="dropdown dropdown-padding"
