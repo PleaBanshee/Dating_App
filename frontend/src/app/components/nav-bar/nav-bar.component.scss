@@ -1,4 +1,12 @@
 .nav-container {
+  .active {
+    color: #ffc107 !important;
+  }
+
+  .nav-link.text-white:hover {
+    color: #28a745 !important;
+  }
+
   .mouse-pointer {
     cursor: pointer;
   }

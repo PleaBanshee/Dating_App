@@ -1,7 +1,7 @@
 <div class="nav-container">
   <nav class="navbar navbar-expand-lg bg-dark p-3">
     <div class="container">
-      <a class="navbar-brand text-white" href="#">{{ title }}</a>
+      <a class="navbar-brand text-white" routerLink="/">{{ title }}</a>
       <button
         class="navbar-toggler border-light"
         type="button"
@@ -20,15 +20,30 @@
           *ngIf="accountService.currentUser$ | async"
         >
           <li class="nav-item">
-            <a class="nav-link active text-white" aria-current="page" href="#"
+            <a
+              class="nav-link text-white"
+              aria-current="page"
+              routerLink="/members"
+              routerLinkActive="active"
               >Matches</a
             >
           </li>
           <li class="nav-item">
-            <a class="nav-link text-white" href="#">Lists</a>
+            <a
+              class="nav-link text-white"
+              routerLink="/lists"
+              routerLinkActive="active"
+              >Lists</a
+            >
           </li>
           <li class="nav-item">
-            <a class="nav-link active text-white mouse-pointer"> Messages </a>
+            <a
+              class="nav-link text-white mouse-pointer"
+              routerLink="/messages"
+              routerLinkActive="active"
+            >
+              Messages
+            </a>
           </li>
         </ul>
         <div
