@@ -1,5 +1,5 @@
 <div class="nav-container">
-  <nav class="navbar navbar-expand-lg bg-dark p-3">
+  <nav class="navbar navbar-expand-lg bg-primary p-3">
     <div class="container">
       <a class="navbar-brand text-white" routerLink="/">{{ title }}</a>
       <button
@@ -47,13 +47,13 @@
         </ul>
         <div
           class="dropdown dropdown-padding"
-          *ngIf="accountService.currentUser$ | async"
+          *ngIf="accountService.currentUser$ | async as user"
           dropdown
         >
           <a
             class="dropdown-toggle text-light text-decoration-none"
             dropdownToggle
-            >Welcome {{ accountService.getUserName() ?? "User" }}</a
+            >Welcome {{ user?.username | titlecase }}</a
           >
           <div class="dropdown-menu" *dropdownMenu>
             <a class="dropdown-item">Edit Profile</a>
@@ -83,7 +83,7 @@
             placeholder="Password"
             aria-label="Search"
           />
-          <button class="btn btn-outline-success" type="submit">Search</button>
+          <button class="btn btn-success" type="submit">Search</button>
         </form>
       </div>
     </div>
