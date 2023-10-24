@@ -23,21 +23,11 @@ export class NavBarComponent {
       next: (res) => {
         console.log(`User: ${res}`);
         this.router.navigateByUrl('/members');
-        this.toaster.success('Logged in successfully', 'SUCCESS', {
-          closeButton: true,
-          timeOut: 10000,
-          easing: 'linear',
-          positionClass: 'toast-top-center',
-        });
+        this.toaster.success('Logged in successfully', 'SUCCESS');
       },
       error: (err) => {
         console.log(err.error);
-        this.toaster.error(`${err.error}`, 'ERROR', {
-          closeButton: true,
-          timeOut: 10000,
-          easing: 'linear',
-          positionClass: 'toast-top-center',
-        });
+        this.toaster.error(`${err.error}`);
       },
     });
   }
