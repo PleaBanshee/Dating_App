@@ -9,10 +9,17 @@ import { authGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   { path: ``, component: HomeComponent }, // default route: home
-  { path: `members`, component: MemberListComponent, canActivate: [authGuard] }, // canActivate: route protection
-  { path: `members/:id`, component: MemberDetailsComponent },
-  { path: `lists`, component: ListsComponent },
-  { path: `messages`, component: MessagesComponent },
+  {
+    path: ``,
+    runGuardsAndResolvers: 'always',
+    canActivate: [authGuard], // canActivate: route protection
+    children: [
+      { path: `members`, component: MemberListComponent },
+      { path: `members/:id`, component: MemberDetailsComponent },
+      { path: `lists`, component: ListsComponent },
+      { path: `messages`, component: MessagesComponent },
+    ],
+  },
   { path: `**`, component: HomeComponent, pathMatch: `full` }, // WildCard Route: doesn't match defined routes
 ];
 
