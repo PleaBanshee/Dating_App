@@ -35,7 +35,11 @@ import { ToastrModule } from 'ngx-toastr';
     FormsModule,
     BsDropdownModule.forRoot(),
     ToastrModule.forRoot({
-      positionClass: 'toast-top-center',
+      closeButton: true,
+      timeOut: 3000,
+      easing: 'ease-in-out',
+      positionClass: 'toast-center-center',
+      preventDuplicates: true,
     }),
   ],
   providers: [],
