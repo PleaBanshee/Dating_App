@@ -1,1 +1,17 @@
-<p>server-error works!</p>
+<div
+  class="div-position w-50 p-3 d-flex flex-column justify-content-center align-items-center"
+>
+  <h4>Internal Server Error: Please try again...</h4>
+  <ng-container *ngIf="error">
+    <h5 class="text-danger">Error: {{ error?.message }}</h5>
+    <p class="font-weight-bold">Something went wrong with the server</p>
+    <p class="fw-bold">Try the following:</p>
+    <ol class="try-list">
+      <li>Refresh browser</li>
+      <li>Go back to the home page and try again</li>
+      <li>If the error keeps persisting, try again later...</li>
+    </ol>
+  </ng-container>
+  <p class="fw-bold">Here is the stack trace:</p>
+  <code class="mt-1">{{ error.details }}</code>
+</div>
