@@ -1,6 +1,7 @@
 using Dating_App.Data;
 using Dating_App.Extensions;
 using Dating_App.Interfaces;
+using Dating_App.Middleware;
 using Dating_App.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Text;
@@ -26,6 +27,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+// Exception handling middleware at top, errors need to be handled first
+app.UseMiddleware<ExceptionMiddleware>();
 
 // The order in which you add middleware is important!
 app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().WithOrigins(CORS_PORT));
