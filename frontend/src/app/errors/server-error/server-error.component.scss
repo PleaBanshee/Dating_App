@@ -1,0 +1,17 @@
+.div-position {
+  border: 4px solid #dc3545;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -45%);
+
+  .try-list {
+    margin-left: 3%;
+  }
+
+  code {
+    width: 100%;
+    background-color: whitesmoke;
+    font-size: 9px;
+  }
+}
