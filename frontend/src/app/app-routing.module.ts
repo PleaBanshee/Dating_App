@@ -7,6 +7,8 @@ import { ListsComponent } from './components/lists/lists.component';
 import { MessagesComponent } from './components/messages/messages.component';
 import { authGuard } from './guards/auth.guard';
 import { ErrorComponent } from './errors/error/error.component';
+import { NotFoundComponent } from './errors/not-found/not-found.component';
+import { ServerErrorComponent } from './errors/server-error/server-error.component';
 
 const routes: Routes = [
   { path: ``, component: HomeComponent }, // default route: home
@@ -22,7 +24,9 @@ const routes: Routes = [
     ],
   },
   { path: 'errors', component: ErrorComponent },
-  { path: `**`, component: HomeComponent, pathMatch: `full` }, // WildCard Route: doesn't match defined routes
+  { path: 'not-found', component: NotFoundComponent },
+  { path: 'server-error', component: ServerErrorComponent },
+  { path: `**`, component: NotFoundComponent, pathMatch: `full` }, // WildCard Route: doesn't match defined routes
 ];
 
 @NgModule({

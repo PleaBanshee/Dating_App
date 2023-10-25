@@ -25,10 +25,6 @@ export class NavBarComponent {
         this.router.navigateByUrl('/members');
         this.toaster.success('Logged in successfully', 'SUCCESS');
       },
-      error: (err) => {
-        console.log(err.error);
-        this.toaster.error(`${err.error}`);
-      },
     });
   }
 
