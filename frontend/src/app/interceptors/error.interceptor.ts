@@ -28,7 +28,7 @@ export class ErrorInterceptor implements HttpInterceptor {
               // Check for account validation error
               if (error.error.errors) {
                 const stateErrors = this.getStateErrors(error.error.errors);
-                throw stateErrors;
+                throw stateErrors.flat(); // concatenates array
               } else {
                 this.showErrorToaster(error.error, error.status);
               }

@@ -10,6 +10,8 @@ import { Constants } from 'src/app/constants/Constants';
 
 // Serves as error handler for errors received from backend
 export class ErrorComponent {
+  validationErrors: string[] = [];
+
   constructor(private httpClient: HttpClient) {}
 
   getNotFound() {
@@ -61,7 +63,10 @@ export class ErrorComponent {
         next: (res) => {
           console.log(res);
         },
-        error: (err) => console.log(err),
+        error: (err) => {
+          this.validationErrors = err;
+          console.log(err);
+        },
       });
   }
 }
