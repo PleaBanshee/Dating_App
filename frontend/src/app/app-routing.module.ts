@@ -6,6 +6,7 @@ import { MemberDetailsComponent } from './components/members/member-details/memb
 import { ListsComponent } from './components/lists/lists.component';
 import { MessagesComponent } from './components/messages/messages.component';
 import { authGuard } from './guards/auth.guard';
+import { ErrorComponent } from './errors/error/error.component';
 
 const routes: Routes = [
   { path: ``, component: HomeComponent }, // default route: home
@@ -20,6 +21,7 @@ const routes: Routes = [
       { path: `messages`, component: MessagesComponent },
     ],
   },
+  { path: 'errors', component: ErrorComponent },
   { path: `**`, component: HomeComponent, pathMatch: `full` }, // WildCard Route: doesn't match defined routes
 ];
 

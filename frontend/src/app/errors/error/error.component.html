@@ -1,0 +1,20 @@
+<ng-container>
+  <button class="btn btn-outline-primary me-3" (click)="getNotFound()">
+    Test Error 404
+  </button>
+  <button class="btn btn-outline-primary me-3" (click)="getBadRequest()">
+    Test Error 400
+  </button>
+  <button
+    class="btn btn-outline-primary me-3"
+    (click)="getInternalServerError()"
+  >
+    Test Error 500
+  </button>
+  <button class="btn btn-outline-primary me-3" (click)="getNotAuth()">
+    Test Error 401
+  </button>
+  <button class="btn btn-outline-primary me-3" (click)="getValidationError()">
+    Test Validation Register
+  </button>
+</ng-container>

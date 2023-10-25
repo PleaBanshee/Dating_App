@@ -1,14 +1,20 @@
 .nav-container {
   .active {
-    color: #ffc107 !important;
+    color: #f78a2a !important;
+    border: 2px solid #f78a2a;
+    border-radius: 8px;
   }
 
   .nav-link.text-white:hover {
-    color: #28a745 !important;
+    color: #2bfc55 !important;
   }
 
   .mouse-pointer {
     cursor: pointer;
+  }
+
+  .test-item {
+    width: 150%;
   }
 
   .dropdown-toggle,
@@ -22,5 +28,9 @@
 
   button.navbar-toggler.border-light {
     border-width: 2px;
+  }
+
+  .btn-login {
+    background-color: #24a428;
   }
 }
