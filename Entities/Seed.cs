@@ -1,8 +1,8 @@
 ﻿using Dating_App.Data;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System.Security.Cryptography;
 using System.Text;
-using System.Text.Json;
 
 namespace Dating_App.Entities
 {
@@ -14,14 +14,8 @@ namespace Dating_App.Entities
 
             var userData = await File.ReadAllTextAsync("Data/UserSeedData.json");
 
-            // Deserialize the JSON data into a list of AppUser objects
-            var options = new JsonSerializerOptions
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-            };
+            var users = JsonConvert.DeserializeObject<List<AppUser>>(userData);
 
-            var users = JsonSerializer.Deserialize<List<AppUser>>(userData, options);
-            
             foreach (var user in users) 
             { 
                 using var hmac = new HMACSHA512();

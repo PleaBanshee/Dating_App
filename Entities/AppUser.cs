@@ -1,5 +1,4 @@
 ﻿using Dating_App.Extensions;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Dating_App.Entities
@@ -8,7 +7,6 @@ namespace Dating_App.Entities
     {
         public int Id { get; set; }
 
-        [Required]
         public string UserName { get; set; }
 
         public byte[] PasswordHash { get; set; }
