@@ -1,10 +1,5 @@
-using Dating_App.Data;
 using Dating_App.Extensions;
-using Dating_App.Interfaces;
 using Dating_App.Middleware;
-using Dating_App.Services;
-using Microsoft.EntityFrameworkCore;
-using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 var CORS_PORT = "https://localhost:4200";
