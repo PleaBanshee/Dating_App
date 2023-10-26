@@ -1,5 +1,9 @@
-﻿namespace Dating_App.Entities
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Dating_App.Entities
 {
+    // Entity framework will create a table called Photos
+    [Table("Photos")]
     public class Photo
     {
         public int Id { get; set; }
@@ -14,5 +18,10 @@
         public string PublicId { get; set; }
 
         public DateTime LastUpdated { get; set; }
+
+        // A user can have many photos
+        public int AppUserId { get; set; }
+
+        public AppUser AppUser { get; set; }
     }
 }

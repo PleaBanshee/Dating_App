@@ -1,5 +1,6 @@
 ﻿using Dating_App.Extensions;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Dating_App.Entities
 {
@@ -38,6 +39,7 @@ namespace Dating_App.Entities
         public ICollection<Photo> Photos { get; set; } = new List<Photo>();
 
         // This is a many-to-many relationship
+        [NotMapped]
         public ICollection<UserLikes> LikedByUsers { get; set; } = new List<UserLikes>();
 
         public int GetAge() => DateOfBirth.CalculateAge();
