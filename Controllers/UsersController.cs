@@ -17,7 +17,6 @@ namespace Dating_App.Controllers
             _context = context;
         }
 
-        [AllowAnonymous] // Allows non-authenticated users to access this method
         [HttpGet] // api/users
         public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers()
         {
