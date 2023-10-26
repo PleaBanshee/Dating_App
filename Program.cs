@@ -1,5 +1,8 @@
+using Dating_App.Data;
+using Dating_App.Entities;
 using Dating_App.Extensions;
 using Dating_App.Middleware;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 var CORS_PORT = "https://localhost:4200";
@@ -40,5 +43,22 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+// Provides access to all services in this class
+using var scope = app.Services.CreateScope();
+var services = scope.ServiceProvider;
+try
+{
+    var context = services.GetRequiredService<DataContext>();
+    // asynchronously applies migrations to the db
+    await context.Database.MigrateAsync();
+    // Seeds the db
+    await Seed.SeedUsers(context);
+}
+catch (Exception ex)
+{
+    var logger = services.GetService<ILogger>();
+    logger.LogError(ex, "An error occurred during DB migration");
+}
 
 app.Run();
