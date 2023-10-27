@@ -17,7 +17,7 @@ namespace Dating_App.Entities
         // Image Id from Cloudinary
         public string PublicId { get; set; }
 
-        public DateTime LastUpdated { get; set; }
+        public DateTime LastUpdated { get; set; } = DateTime.UtcNow;
 
         // A user can have many photos
         public int AppUserId { get; set; }
