@@ -9,7 +9,11 @@ namespace Dating_App.Helpers
         // Maps the entities to the DTOs
         public AutoMapperProfiles()
         {
-            CreateMap<AppUser, MemberDto>();
+            // Maps PhotoUrl to the Url property of the PhotoDto
+            CreateMap<AppUser, MemberDto>()
+                .ForMember(dest => dest.PhotoUrl, opt => opt.MapFrom(src => src.Photos.FirstOrDefault(x => x.IsProfilePic).Url));
+                // This is a custom mapping
+                // .ForMember(dest => dest.Age, opt => opt.MapFrom(src => src.DateOfBirth.CalculateAge()));
 
             CreateMap<Photo, PhotoDto>();
         }
