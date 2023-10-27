@@ -1,4 +1,5 @@
 ﻿using Dating_App.Data;
+using Dating_App.Data.Repositories;
 using Dating_App.Interfaces;
 using Dating_App.Services;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +19,9 @@ namespace Dating_App.Extensions
 
             // Token Service: JWTs
             services.AddScoped<ITokenService, TokenService>();
+
+            // Registers the User Repository as an injectable service 
+            services.AddScoped<IUserRepository, UserRepository>();
 
             return services;
         }
