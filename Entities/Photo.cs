@@ -12,7 +12,7 @@ namespace Dating_App.Entities
 
         public string Title { get; set; }
 
-        public bool ProfilePic { get; set; }
+        public bool IsProfilePic { get; set; }
 
         // Image Id from Cloudinary
         public string PublicId { get; set; }

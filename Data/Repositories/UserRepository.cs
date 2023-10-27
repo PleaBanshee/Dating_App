@@ -15,18 +15,24 @@ namespace Dating_App.Data.Repositories
         }
         public async Task<AppUser> GetUserByIdAsync(int id)
         {
-            return await _context.Users.Include(p => p.Photos).FirstOrDefaultAsync(u => u.Id == id);
+            var user = await _context.Users.Include(p => p.Photos).FirstOrDefaultAsync(u => u.Id == id);
+
+            return user;
         }
 
         public async Task<AppUser> GetUserByUsernameAsync(string username)
         {
-            return await _context.Users.SingleOrDefaultAsync(x => x.UserName == username);
+            var user = await _context.Users.Include(p => p.Photos).FirstOrDefaultAsync(u => u.UserName == username);
+
+            return user;
         }
 
         public async Task<IEnumerable<AppUser>> GetUsersAsync()
         {
             // Include(): load the Photos entity along with the User entity
-            return await _context.Users.Include(p => p.Photos).ToListAsync();
+            var users = await _context.Users.Include(p => p.Photos).ToListAsync();
+
+            return users;
         }
 
         public async Task<bool> SaveAllAsync()

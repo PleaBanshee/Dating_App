@@ -23,6 +23,9 @@ namespace Dating_App.Extensions
             // Registers the User Repository as an injectable service 
             services.AddScoped<IUserRepository, UserRepository>();
 
+            // Registers AutoMapper, scans the assembly for mappings and profiles
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
             return services;
         }
     }
