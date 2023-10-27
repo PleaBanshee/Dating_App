@@ -1,19 +1,17 @@
 ﻿using AutoMapper;
+using Dating_App.DTOs;
+using Dating_App.Entities;
 
 namespace Dating_App.Helpers
 {
     public class AutoMapperProfiles: Profile
     {
+        // Maps the entities to the DTOs
         public AutoMapperProfiles()
         {
-            // This is a one-to-many relationship
-            CreateMap<Entities.AppUser, DTOs.MemberDto>()
-                .ForMember(dest => dest.PhotoUrl, opt => opt.MapFrom(src => src.Photos.FirstOrDefault(x => x.ProfilePic).Url))
-                .ForMember(dest => dest.Age, opt => opt.MapFrom(src => src.DateOfBirth.CalculateAge()));
-            // This is a many-to-many relationship
-            CreateMap<Entities.Photo, DTOs.PhotoDto>();
-            // This is a one-to-many relationship
-            CreateMap<DTOs.MemberUpdateDto, Entities.AppUser>();
+            CreateMap<AppUser, MemberDto>();
+
+            CreateMap<Photo, PhotoDto>();
         }
     }
 }
