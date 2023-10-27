@@ -6,6 +6,9 @@
 
         public string UserName { get; set; }
 
+        // URL to user's profile pic
+        public string PhotoUrl { get; set; }
+
         public int Age { get; set; }
 
         public string FullName { get; set; }
