@@ -15,7 +15,7 @@ namespace Dating_App.Data.Repositories
         }
         public async Task<AppUser> GetUserByIdAsync(int id)
         {
-            return await _context.Users.FindAsync(id);
+            return await _context.Users.Include(p => p.Photos).FirstOrDefaultAsync(u => u.Id == id);
         }
 
         public async Task<AppUser> GetUserByUsernameAsync(string username)
@@ -25,7 +25,8 @@ namespace Dating_App.Data.Repositories
 
         public async Task<IEnumerable<AppUser>> GetUsersAsync()
         {
-            return await _context.Users.ToListAsync();
+            // Include(): load the Photos entity along with the User entity
+            return await _context.Users.Include(p => p.Photos).ToListAsync();
         }
 
         public async Task<bool> SaveAllAsync()
