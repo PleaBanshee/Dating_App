@@ -1,4 +1,5 @@
-﻿using Dating_App.Entities;
+﻿using Dating_App.DTOs;
+using Dating_App.Entities;
 
 // User Repository Interface: extends the User Repository
 namespace Dating_App.Interfaces
@@ -14,5 +15,11 @@ namespace Dating_App.Interfaces
         Task<AppUser> GetUserByIdAsync(int id);
 
         Task<AppUser> GetUserByUsernameAsync(string username);
+
+        Task<IEnumerable<MemberDto>> GetMembersAsync();
+
+        Task<MemberDto> GetMemberByUsernameAsync(string username);
+
+        Task<MemberDto> GetMemberByIdAsync(int id);
     }
 }
