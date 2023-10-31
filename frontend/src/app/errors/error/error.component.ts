@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { Constants } from 'src/app/constants/Constants';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-error',
@@ -16,7 +16,7 @@ export class ErrorComponent {
 
   getNotFound() {
     this.httpClient
-      .get(`${Constants.BASE_URL}/errorhandler/not-found`)
+      .get(`${environment.apiUrl}/errorhandler/not-found`)
       .subscribe({
         next: (res) => {
           console.log(res);
@@ -27,7 +27,7 @@ export class ErrorComponent {
 
   getBadRequest() {
     this.httpClient
-      .get(`${Constants.BASE_URL}/errorhandler/bad-request`)
+      .get(`${environment.apiUrl}/errorhandler/bad-request`)
       .subscribe({
         next: (res) => {
           console.log(res);
@@ -38,7 +38,7 @@ export class ErrorComponent {
 
   getInternalServerError() {
     this.httpClient
-      .get(`${Constants.BASE_URL}/errorhandler/server-error`)
+      .get(`${environment.apiUrl}/errorhandler/server-error`)
       .subscribe({
         next: (res) => {
           console.log(res);
@@ -48,7 +48,7 @@ export class ErrorComponent {
   }
 
   getNotAuth() {
-    this.httpClient.get(`${Constants.BASE_URL}/errorhandler/auth`).subscribe({
+    this.httpClient.get(`${environment.apiUrl}/errorhandler/auth`).subscribe({
       next: (res) => {
         console.log(res);
       },
@@ -58,7 +58,7 @@ export class ErrorComponent {
 
   getValidationError() {
     this.httpClient
-      .post(`${Constants.BASE_URL}/account/register`, {})
+      .post(`${environment.apiUrl}/account/register`, {})
       .subscribe({
         next: (res) => {
           console.log(res);
