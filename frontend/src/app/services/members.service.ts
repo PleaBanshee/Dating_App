@@ -10,7 +10,7 @@ export class MembersService {
   constructor(private httpClient: HttpClient) {}
 
   getMembers() {
-    return this.httpClient.get<Member[]>(`${environment.apiUrl}users`);
+    return this.httpClient.get<Member[]>(`${environment.apiUrl}/users`);
   }
 
   getMemberByName(username: string) {
