@@ -6,20 +6,41 @@ import {
   HttpInterceptor,
   HttpErrorResponse,
 } from '@angular/common/http';
-import { Observable, catchError } from 'rxjs';
+import { Observable, catchError, take } from 'rxjs';
 import { NavigationExtras, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { AccountService } from '../services/account.service';
+import { User } from '../models/user';
 
 // Handles requests and responses between server and client
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-  constructor(private router: Router, private toaster: ToastrService) {}
+  constructor(
+    private router: Router,
+    private toaster: ToastrService,
+    private accountService: AccountService
+  ) {}
 
   // Intercepts error messages from server
   intercept(
     request: HttpRequest<unknown>,
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
+    let currentUser: User | null;
+
+    // send bearer token, so app can fetch users
+    this.accountService.currentUser$.pipe(take(1)).subscribe((user) => {
+      currentUser = user;
+      if (currentUser) {
+        request = request.clone({
+          setHeaders: {
+            Authorization: `Bearer ${currentUser.token}`, // check request in Postman
+          },
+        });
+      }
+      next.handle(request);
+    });
+
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
         if (error) {
@@ -34,10 +55,12 @@ export class ErrorInterceptor implements HttpInterceptor {
               }
               break;
             case 401:
-              this.showErrorToaster(
-                'Unauthorized: Invalid username or password',
-                error.status
-              );
+              if (currentUser) {
+                this.showErrorToaster(
+                  'Unauthorized: Invalid username or password',
+                  error.status
+                );
+              }
               break;
             case 404:
               this.router.navigateByUrl('/not-found');

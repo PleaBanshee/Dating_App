@@ -1,5 +1,4 @@
-﻿using Dating_App.Entities;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Dating_App.Interfaces;
 using AutoMapper;
