@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { Constants } from 'src/app/constants/Constants';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-home',
@@ -22,7 +22,7 @@ export class HomeComponent implements OnInit {
   }
 
   getUsers() {
-    this.httpClient.get<any[]>(`${Constants.BASE_URL}/users`).subscribe({
+    this.httpClient.get<any[]>(`${environment.apiUrl}/users`).subscribe({
       next: (res) => {
         this.users = res;
       },

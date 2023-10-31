@@ -1,3 +1,3 @@
 export class Constants {
-  static BASE_URL = `https://localhost:5000/api`;
+  // You can use this file for global constants
 }

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Constants } from '../constants/Constants';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, map } from 'rxjs';
 import { User } from '../models/user';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +16,7 @@ export class AccountService {
 
   login(user: any) {
     return this.httpClient
-      .post<User>(`${Constants.BASE_URL}/account/login`, user)
+      .post<User>(`${environment.apiUrl}/account/login`, user)
       .pipe(
         map((res: User) => {
           console.log(res);
@@ -31,7 +31,7 @@ export class AccountService {
 
   register(user: any) {
     return this.httpClient
-      .post<User>(`${Constants.BASE_URL}/account/register`, user)
+      .post<User>(`${environment.apiUrl}/account/register`, user)
       .pipe(
         map((currentUser: User) => {
           if (currentUser) {
