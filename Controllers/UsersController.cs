@@ -25,29 +25,22 @@ namespace Dating_App.Controllers
         [HttpGet] // api/users
         public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers()
         {
-            var users = await _userRepository.GetUsersAsync();
-
-            // Mapping the users to MemberDto
-            var usersToReturn = _mapper.Map<IEnumerable<MemberDto>>(users);
+            var users = await _userRepository.GetMembersAsync();
 
             // returns status code and users
-            return Ok(usersToReturn);
+            return Ok(users);
         }
 
         [HttpGet("{username}")] // api/users/{username}
         public async Task<ActionResult<MemberDto>> GetUser(string userName)
         {
-            var user = await _userRepository.GetUserByUsernameAsync(userName);
-
-            return _mapper.Map<MemberDto>(user);
+            return await _userRepository.GetMemberByUsernameAsync(userName);
         }
 
         [HttpGet("{id:int}")] // api/users/{id}
         public async Task<ActionResult<MemberDto>> GetUser(int id)
         {
-            var user =  await _userRepository.GetUserByIdAsync(id);
-
-            return _mapper.Map<MemberDto>(user);
+            return await _userRepository.GetMemberByIdAsync(id);
         }
     }
 }
