@@ -1,9 +1,6 @@
 <!-- Use ngIf instead of optional chaining to check if object exists -->
-<div
-  class="row d-flex justify-content-center align-items-center py-3"
-  *ngIf="member"
->
-  <div class="col-4 text-center w-50">
+<div class="row py-3" *ngIf="member">
+  <div class="col-4 text-center">
     <div class="card d-flex justify-content-center align-items-center">
       <img
         [src]="member.photoUrl || 'assets/user.png'"
@@ -37,5 +34,25 @@
         </div>
       </div>
     </div>
+  </div>
+  <div class="col-7 tabset-left">
+    <tabset class="member-tabset">
+      <tab heading="About {{ member.fullName }}">
+        <h4>Description</h4>
+        <p>{{ member.introduction }}</p>
+        <h4>Looking for</h4>
+        <p>{{ member.lookingFor }}</p>
+      </tab>
+      <tab heading="Interests">
+        <h4>Interests</h4>
+        <p>{{ member.interests }}</p>
+      </tab>
+      <tab heading="Photos">
+        <p>This will be {{ member.fullName }}'s photo gallery</p>
+      </tab>
+      <tab heading="Messages">
+        <p>Chat with {{ member.fullName }} here</p>
+      </tab>
+    </tabset>
   </div>
 </div>
