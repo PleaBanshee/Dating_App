@@ -1,1 +1,2 @@
-<p>member-details works!</p>
+<!-- Use ngIf instead of optional chaining to check if object exists -->
+<h1 *ngIf="member">{{ member.fullName }}</h1>
