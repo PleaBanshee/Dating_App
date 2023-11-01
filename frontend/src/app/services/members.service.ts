@@ -15,11 +15,11 @@ export class MembersService {
 
   getMemberByName(username: string) {
     return this.httpClient.get<Member>(
-      `${environment.apiUrl}users/${username}`
+      `${environment.apiUrl}/users/${username}`
     );
   }
 
   getMemberById(id: number) {
-    return this.httpClient.get<Member>(`${environment.apiUrl}users/${id}`);
+    return this.httpClient.get<Member>(`${environment.apiUrl}/users/${id}`);
   }
 }
