@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { take } from 'rxjs';
@@ -14,6 +14,14 @@ import { MembersService } from 'src/app/services/members.service';
 })
 export class MemberEditComponent implements OnInit {
   @ViewChild('editForm') editForm: NgForm | undefined;
+  // display a notification when the user attempts to leave page with unsaved changes in a form.
+  @HostListener('window:beforeunload', ['$event']) unsavedNotification(
+    $event: any
+  ) {
+    if (this.editForm?.dirty) {
+      $event.returnValue = true;
+    }
+  }
   member: Member | undefined;
   user: User | null = null;
 

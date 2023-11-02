@@ -10,6 +10,7 @@ import { ErrorComponent } from './errors/error/error.component';
 import { NotFoundComponent } from './errors/not-found/not-found.component';
 import { ServerErrorComponent } from './errors/server-error/server-error.component';
 import { MemberEditComponent } from './components/members/member-edit/member-edit.component';
+import { navigationGuard } from './guards/navigation.guard';
 
 const routes: Routes = [
   { path: ``, component: HomeComponent }, // default route: home
@@ -20,7 +21,11 @@ const routes: Routes = [
     children: [
       { path: `members`, component: MemberListComponent },
       { path: `members/:username`, component: MemberDetailsComponent },
-      { path: `member/edit`, component: MemberEditComponent },
+      {
+        path: `member/edit`,
+        component: MemberEditComponent,
+        canDeactivate: [navigationGuard], // prevents user from navigating without saved changes
+      },
       { path: `lists`, component: ListsComponent },
       { path: `messages`, component: MessagesComponent },
     ],
