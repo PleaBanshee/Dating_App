@@ -47,8 +47,12 @@
         <h4>Interests</h4>
         <p>{{ member.interests }}</p>
       </tab>
-      <tab heading="Photos">
-        <p>This will be {{ member.fullName }}'s photo gallery</p>
+      <tab heading="Photos" #photoTab="tab">
+        <gallery
+          *ngIf="photoTab.active"
+          class="gallery"
+          [items]="images"
+        ></gallery>
       </tab>
       <tab heading="Messages">
         <p>Chat with {{ member.fullName }} here</p>

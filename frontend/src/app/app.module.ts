@@ -10,7 +10,6 @@ import { FormsModule } from '@angular/forms';
 import { HomeComponent } from './components/home/home.component';
 import { RegisterComponent } from './components/register/register.component';
 import { MemberListComponent } from './components/members/member-list/member-list.component';
-import { MemberDetailsComponent } from './components/members/member-details/member-details.component';
 import { ListsComponent } from './components/lists/lists.component';
 import { MessagesComponent } from './components/messages/messages.component';
 import { SharedModule } from './modules/shared/shared.module';
@@ -28,7 +27,6 @@ import { JwtInterceptor } from './interceptors/jwt.interceptor';
     HomeComponent,
     RegisterComponent,
     MemberListComponent,
-    MemberDetailsComponent,
     ListsComponent,
     MessagesComponent,
     ErrorComponent,
