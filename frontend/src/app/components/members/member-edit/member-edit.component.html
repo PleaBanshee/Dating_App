@@ -4,7 +4,7 @@
     <h1>Your Profile</h1>
   </div>
   <div class="col-7 save-changes text-center info-width">
-    <div class="alert alert-info p-2 pt-3 fw-bold">
+    <div class="alert alert-info p-2 pt-3 fw-bold" *ngIf="editForm.dirty">
       <p>Are you sure you want to save your changes?</p>
     </div>
   </div>
@@ -34,14 +34,21 @@
         </div>
       </div>
       <div class="card-footer w-100">
-        <button class="btn btn-success rounded col-12">Save Changes</button>
+        <button
+          type="submit"
+          form="editForm"
+          [disabled]="!editForm.dirty"
+          class="btn btn-success rounded col-12"
+        >
+          Save Changes
+        </button>
       </div>
     </div>
   </div>
   <div class="col-7 tabset-left">
     <tabset class="member-tabset">
       <tab heading="About {{ member.fullName }}">
-        <form>
+        <form #editForm="ngForm" id="editForm" (ngSubmit)="updateMember()">
           <h4 class="mt-2">Description</h4>
           <textarea
             class="form-control"
