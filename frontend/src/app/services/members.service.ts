@@ -22,4 +22,8 @@ export class MembersService {
   getMemberById(id: number) {
     return this.httpClient.get<Member>(`${environment.apiUrl}/users/${id}`);
   }
+
+  updateMember(member: Member) {
+    return this.httpClient.put(`${environment.apiUrl}/users`, member);
+  }
 }
