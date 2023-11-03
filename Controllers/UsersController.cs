@@ -4,6 +4,8 @@ using Dating_App.Interfaces;
 using AutoMapper;
 using Dating_App.DTOs;
 using System.Security.Claims;
+using Dating_App.Extensions;
+using Dating_App.Entities;
 
 namespace Dating_App.Controllers
 {
@@ -13,13 +15,15 @@ namespace Dating_App.Controllers
     {
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
+        private readonly IPhotoService _photoService;
 
         // Dependency Injection: injects the User Repository into the controller
         // Injection of Imapper for mapping objects
-        public UsersController(IUserRepository userRepository, IMapper mapper)
+        public UsersController(IUserRepository userRepository, IMapper mapper, IPhotoService photoService)
         {
             _userRepository = userRepository;
             _mapper = mapper;
+            _photoService = photoService;
         }
 
         [HttpGet] // api/users
@@ -47,8 +51,7 @@ namespace Dating_App.Controllers
         public async Task<ActionResult> UpdateUser(MemberUpdateDto memberUpdateDto)
         {
             //  extracts the username of the currently authenticated user from their claims
-            var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var user = await _userRepository.GetUserByUsernameAsync(username);
+            var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
 
             if (user == null) return NotFound();
 
@@ -59,6 +62,35 @@ namespace Dating_App.Controllers
 
             // TODO: return message or status for updating content with same values
             return BadRequest("Failed to update user");
+        }
+
+        [HttpPost("add-photo")] // api/users/add-photo
+        public async Task<ActionResult<PhotoDto>> AddPhoto(IFormFile file)
+        {
+            var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
+
+            if (user == null) return NotFound();
+
+            // upload photo to cloudinary
+            var result = await _photoService.AddPhotoAsync(file);
+
+            if (result.Error != null) return BadRequest(result.Error.Message);
+            
+            var photo = new Photo
+            {
+                Url = result.SecureUrl.AbsoluteUri,
+                PublicId = result.PublicId
+            };
+
+            // if user has no photos, set the first photo as their main photo
+            if (user.Photos.Count == 0) photo.IsProfilePic = true;
+            
+            user.Photos.Add(photo);
+
+            // add photo to database, if changes saved to DB
+            if (await _userRepository.SaveAllAsync()) return _mapper.Map<PhotoDto>(photo);
+
+            return BadRequest("There was a problem uploading your profile pic, please try again");
         }
     }
 }
