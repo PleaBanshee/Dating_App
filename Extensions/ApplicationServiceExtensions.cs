@@ -1,5 +1,6 @@
 ﻿using Dating_App.Data;
 using Dating_App.Data.Repositories;
+using Dating_App.Helpers;
 using Dating_App.Interfaces;
 using Dating_App.Services;
 using Microsoft.EntityFrameworkCore;
@@ -25,6 +26,9 @@ namespace Dating_App.Extensions
 
             // Registers AutoMapper, scans the assembly for mappings and profiles
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+            // Registers Cloudinary Settings, fetches from appsettings
+            services.Configure<CloudinarySettings>(config.GetSection("CloudinarySettings"));
 
             return services;
         }
