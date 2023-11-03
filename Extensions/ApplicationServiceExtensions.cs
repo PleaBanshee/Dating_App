@@ -30,6 +30,9 @@ namespace Dating_App.Extensions
             // Registers Cloudinary Settings, fetches from appsettings
             services.Configure<CloudinarySettings>(config.GetSection("CloudinarySettings"));
 
+            // Registers Photo Service
+            services.AddScoped<IPhotoService, PhotoService>();
+
             return services;
         }
     }
