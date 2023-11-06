@@ -1,5 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { take } from 'rxjs';
 import { Member } from 'src/app/models/member';
+import { User } from 'src/app/models/user';
+import { AccountService } from 'src/app/services/account.service';
 import { MembersService } from 'src/app/services/members.service';
 
 @Component({
@@ -10,8 +13,20 @@ import { MembersService } from 'src/app/services/members.service';
 export class PhotoEditorComponent implements OnInit {
   @Input() member: Member | undefined;
   photoNames: string[] = [];
+  user: User | undefined;
 
-  constructor(private memberService: MembersService) {}
+  constructor(
+    private accountService: AccountService,
+    private memberService: MembersService
+  ) {
+    this.accountService.currentUser$.pipe(take(1)).subscribe({
+      next: (user) => {
+        if (user) {
+          this.user = user;
+        }
+      },
+    });
+  }
 
   ngOnInit(): void {
     const userNamePattern = /\/([^/]+)\/?$/;

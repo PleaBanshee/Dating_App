@@ -23,6 +23,7 @@ import { MemberEditComponent } from './components/members/member-edit/member-edi
 import { LoadingInterceptor } from './interceptors/loading.interceptor';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { PhotoEditorComponent } from './components/members/photo-editor/photo-editor.component';
+import { FileUploadComponent } from './components/members/file-upload/file-upload.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { PhotoEditorComponent } from './components/members/photo-editor/photo-ed
     MemberCardComponent,
     MemberEditComponent,
     PhotoEditorComponent,
+    FileUploadComponent,
   ],
   imports: [
     BrowserModule,
