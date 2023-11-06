@@ -14,6 +14,7 @@ export class PhotoEditorComponent implements OnInit {
   @Input() member: Member | undefined;
   photoNames: string[] = [];
   user: User | undefined;
+  userName: string = '';
 
   constructor(
     private accountService: AccountService,
@@ -23,7 +24,13 @@ export class PhotoEditorComponent implements OnInit {
       next: (user) => {
         if (user) {
           this.user = user;
+          this.userName = user.username;
         }
+      },
+    });
+    this.memberService.getMemberByName(this.userName).subscribe({
+      next: (member) => {
+        this.member = member;
       },
     });
   }
