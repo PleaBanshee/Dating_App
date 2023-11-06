@@ -12,10 +12,10 @@ import { environment } from 'src/environments/environment';
 })
 export class FileUploadComponent implements OnInit {
   @Input() member: Member | undefined;
+  @Input() user: User | undefined;
   uploader: FileUploader | undefined;
   hasBaseDropZoneOver: boolean = false;
   baseUrl: string = environment.apiUrl;
-  user: User | undefined;
 
   constructor(private accountService: AccountService) {}
 
@@ -30,7 +30,7 @@ export class FileUploadComponent implements OnInit {
   initializeUploader() {
     // FileUploader configs
     this.uploader = new FileUploader({
-      url: `${this.baseUrl}users/add-photo`,
+      url: `${this.baseUrl}/users/add-photo`,
       authToken: `Bearer: ${this.user?.token}`,
       isHTML5: true,
       allowedFileType: ['image'],
@@ -38,6 +38,7 @@ export class FileUploadComponent implements OnInit {
       autoUpload: false,
       maxFileSize: 10 * 1024 * 1024, // 10 Megabites cap on Cloudinary
     });
+    console.log(this.uploader.authToken);
 
     // Disable credentials when uploading files, prevents CORS issues
     this.uploader.onAfterAddingFile = (file) => {
