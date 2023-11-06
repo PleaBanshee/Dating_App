@@ -101,5 +101,25 @@ namespace Dating_App.Controllers
 
             return BadRequest("There was a problem uploading your profile pic, please try again");
         }
+
+        [HttpPut("set-profile-pic/{photoId}")] // api/users/set-profile-pic/{id}
+        public async Task<ActionResult> SetProfilePic(int photoId)
+        {
+            var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
+            if (user == null) return NotFound();
+
+            var photo = user.Photos.FirstOrDefault(x => x.Id == photoId);
+            if (photo == null) return NotFound();
+
+            if (photo.IsProfilePic) return BadRequest("This photo is already set as your profile picture");
+
+            // set all other photos to false
+            var currentMain = user.Photos.FirstOrDefault(x => x.IsProfilePic);
+            if (currentMain != null) currentMain.IsProfilePic = false;
+
+            photo.IsProfilePic = true;
+            if (await _userRepository.SaveAllAsync()) return NoContent();
+            return BadRequest("Failed to set main photo");
+        }
     }
 }
