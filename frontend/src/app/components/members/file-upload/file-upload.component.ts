@@ -31,7 +31,7 @@ export class FileUploadComponent implements OnInit {
     // FileUploader configs
     this.uploader = new FileUploader({
       url: `${this.baseUrl}/users/add-photo`,
-      authToken: `Bearer: ${this.user?.token}`,
+      authToken: `Bearer ${this.user?.token}`, // No colon behind bearer, passed with space to headers
       isHTML5: true,
       allowedFileType: ['image'],
       removeAfterUpload: true,
@@ -48,7 +48,7 @@ export class FileUploadComponent implements OnInit {
     this.uploader.onSuccessItem = (item, response, status, headers) => {
       if (response) {
         const photo = JSON.parse(response);
-        this.member?.photos.push();
+        this.member?.photos.push(photo);
       }
     };
   }
