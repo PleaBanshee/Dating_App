@@ -1,8 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FileUploader } from 'ng2-file-upload';
 import { Member } from 'src/app/models/member';
+import { Photo } from 'src/app/models/photo';
 import { User } from 'src/app/models/user';
 import { AccountService } from 'src/app/services/account.service';
+import { MembersService } from 'src/app/services/members.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -13,11 +15,15 @@ import { environment } from 'src/environments/environment';
 export class FileUploadComponent implements OnInit {
   @Input() member: Member | undefined;
   @Input() user: User | undefined;
+  @Output() selectedPhoto = new EventEmitter<Photo>();
   uploader: FileUploader | undefined;
   hasBaseDropZoneOver: boolean = false;
   baseUrl: string = environment.apiUrl;
 
-  constructor(private accountService: AccountService) {}
+  constructor(
+    private accountService: AccountService,
+    private memberService: MembersService
+  ) {}
 
   ngOnInit(): void {
     this.initializeUploader();
@@ -51,5 +57,9 @@ export class FileUploadComponent implements OnInit {
         this.member?.photos.push(photo);
       }
     };
+  }
+
+  emitProfilePic(photo: Photo) {
+    this.selectedPhoto.emit(photo);
   }
 }

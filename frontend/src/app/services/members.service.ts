@@ -37,6 +37,7 @@ export class MembersService {
     return this.httpClient.get<Member>(`${environment.apiUrl}/users/${id}`);
   }
 
+  // No need to specify anobservable when updating
   updateMember(member: Member) {
     return this.httpClient.put(`${environment.apiUrl}/users`, member).pipe(
       map(() => {
@@ -44,6 +45,13 @@ export class MembersService {
         const index = this.members.indexOf(member);
         this.members[index] = { ...this.members[index], ...member }; // updating member value by cloning of the object using the spread operator
       })
+    );
+  }
+
+  setProfilePic(photoId: number) {
+    return this.httpClient.put(
+      `${environment.apiUrl}/users/set-profile-pic/${photoId}`,
+      {}
     );
   }
 }

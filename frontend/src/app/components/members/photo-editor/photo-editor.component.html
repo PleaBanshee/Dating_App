@@ -6,7 +6,14 @@
       alt="{{ photoNames[i] }}"
     />
     <div class="text-center">
-      <button class="btn btn-sm">Main</button>
+      <button
+        class="btn btn-sm"
+        [disabled]="photo.isProfilePic"
+        (click)="setProfilePic(photo)"
+        [ngClass]="photo.isProfilePic ? 'btn-success' : 'btn-outline-success'"
+      >
+        Main
+      </button>
       <button class="btn btn-danger"><i class="fa fa-trash"></i></button>
     </div>
   </div>
