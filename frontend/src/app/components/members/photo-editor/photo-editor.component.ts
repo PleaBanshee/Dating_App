@@ -21,6 +21,7 @@ export class PhotoEditorComponent implements OnInit {
   user: User | undefined;
   userName: string = '';
 
+  // TODO: Update state of profile pictureon hard refresh
   constructor(
     private accountService: AccountService,
     private memberService: MembersService
