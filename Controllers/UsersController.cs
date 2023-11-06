@@ -58,7 +58,7 @@ namespace Dating_App.Controllers
             _mapper.Map(memberUpdateDto, user);
             _userRepository.Update(user);
 
-            if (await _userRepository.SaveAllAsync()) return NoContent(); // OK status for updates
+            if (await _userRepository.SaveAllAsync()) return NoContent(); // OK status for updates: 204
 
             // TODO: return message or status for updating content with same values
             return BadRequest("Failed to update user");
@@ -88,7 +88,16 @@ namespace Dating_App.Controllers
             user.Photos.Add(photo);
 
             // add photo to database, if changes saved to DB
-            if (await _userRepository.SaveAllAsync()) return _mapper.Map<PhotoDto>(photo);
+            if (await _userRepository.SaveAllAsync())
+            {
+                // OK status for posts: 201
+                // response with a Location header pointing to the new resource
+                return CreatedAtAction(
+                    nameof(AddPhoto), 
+                    new { username = user.UserName }, 
+                    _mapper.Map<PhotoDto>(photo)
+                );
+            }
 
             return BadRequest("There was a problem uploading your profile pic, please try again");
         }
