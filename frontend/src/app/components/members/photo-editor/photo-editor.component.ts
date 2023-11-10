@@ -1,5 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { take } from 'rxjs';
+import { Component, Input, OnInit } from '@angular/core';
 import { Member } from 'src/app/models/member';
 import { User } from 'src/app/models/user';
 import { AccountService } from 'src/app/services/account.service';
@@ -17,7 +16,6 @@ export class PhotoEditorComponent implements OnInit {
   photoNames: string[] = [];
   userName: string = '';
 
-  // TODO: Update state of profile picture on hard refresh
   constructor(
     private accountService: AccountService,
     private memberService: MembersService
@@ -47,6 +45,7 @@ export class PhotoEditorComponent implements OnInit {
       next: () => {
         if (this.user && this.member) {
           this.member.photoUrl = photo.url;
+          this.user.photoUrl = photo.url;
           // Set the current user so other components are updated with the same user profile pic
           this.accountService.setCurrentUser(this.user);
           this.member.photos.forEach((pic: Photo) => {
