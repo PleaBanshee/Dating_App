@@ -4,7 +4,6 @@ import { Member } from 'src/app/models/member';
 import { User } from 'src/app/models/user';
 import { AccountService } from 'src/app/services/account.service';
 import { MembersService } from 'src/app/services/members.service';
-import { FileUploadComponent } from '../file-upload/file-upload.component';
 import { Photo } from 'src/app/models/photo';
 
 @Component({
@@ -14,31 +13,18 @@ import { Photo } from 'src/app/models/photo';
 })
 export class PhotoEditorComponent implements OnInit {
   @Input() member: Member | undefined;
-  @ViewChild(FileUploadComponent) fileUploadComponent:
-    | FileUploadComponent
-    | undefined;
+  @Input() user: User | undefined;
   photoNames: string[] = [];
-  user: User | undefined;
   userName: string = '';
 
-  // TODO: Update state of profile pictureon hard refresh
+  // TODO: Update state of profile picture on hard refresh
   constructor(
     private accountService: AccountService,
     private memberService: MembersService
   ) {
-    this.accountService.currentUser$.pipe(take(1)).subscribe({
-      next: (user) => {
-        if (user) {
-          this.user = user;
-          this.userName = user.username;
-        }
-      },
-    });
-    this.memberService.getMemberByName(this.userName).subscribe({
-      next: (member) => {
-        this.member = member;
-      },
-    });
+    if (this.user) {
+      this.userName = this.user?.username;
+    }
   }
 
   ngOnInit(): void {
@@ -57,7 +43,6 @@ export class PhotoEditorComponent implements OnInit {
   }
 
   setProfilePic(photo: Photo) {
-    this.fileUploadComponent?.emitProfilePic(photo);
     this.memberService.setProfilePic(photo.id).subscribe({
       next: () => {
         if (this.user && this.member) {
