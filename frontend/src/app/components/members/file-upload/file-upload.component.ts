@@ -3,6 +3,7 @@ import { FileUploader } from 'ng2-file-upload';
 import { Member } from 'src/app/models/member';
 import { User } from 'src/app/models/user';
 import { AccountService } from 'src/app/services/account.service';
+import { MembersService } from 'src/app/services/members.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -17,7 +18,10 @@ export class FileUploadComponent implements OnInit {
   hasBaseDropZoneOver: boolean = false;
   baseUrl: string = environment.apiUrl;
 
-  constructor(private accountService: AccountService) {}
+  constructor(
+    private accountService: AccountService,
+    private memberService: MembersService
+  ) {}
 
   ngOnInit(): void {
     this.initializeUploader();

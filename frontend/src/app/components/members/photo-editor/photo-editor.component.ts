@@ -1,9 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { take } from 'rxjs';
 import { Member } from 'src/app/models/member';
 import { User } from 'src/app/models/user';
 import { AccountService } from 'src/app/services/account.service';
 import { MembersService } from 'src/app/services/members.service';
+import { Photo } from 'src/app/models/photo';
 
 @Component({
   selector: 'app-photo-editor',
@@ -12,27 +12,17 @@ import { MembersService } from 'src/app/services/members.service';
 })
 export class PhotoEditorComponent implements OnInit {
   @Input() member: Member | undefined;
+  @Input() user: User | undefined;
   photoNames: string[] = [];
-  user: User | undefined;
   userName: string = '';
 
   constructor(
     private accountService: AccountService,
     private memberService: MembersService
   ) {
-    this.accountService.currentUser$.pipe(take(1)).subscribe({
-      next: (user) => {
-        if (user) {
-          this.user = user;
-          this.userName = user.username;
-        }
-      },
-    });
-    this.memberService.getMemberByName(this.userName).subscribe({
-      next: (member) => {
-        this.member = member;
-      },
-    });
+    if (this.user) {
+      this.userName = this.user?.username;
+    }
   }
 
   ngOnInit(): void {
@@ -48,5 +38,26 @@ export class PhotoEditorComponent implements OnInit {
         }
       }
     }
+  }
+
+  setProfilePic(photo: Photo) {
+    this.memberService.setProfilePic(photo.id).subscribe({
+      next: () => {
+        if (this.user && this.member) {
+          this.member.photoUrl = photo.url;
+          this.user.photoUrl = photo.url;
+          // Set the current user so other components are updated with the same user profile pic
+          this.accountService.setCurrentUser(this.user);
+          this.member.photos.forEach((pic: Photo) => {
+            if (pic.isProfilePic) {
+              pic.isProfilePic = false;
+            }
+            if (pic.id === photo.id) {
+              pic.isProfilePic = true;
+            }
+          });
+        }
+      },
+    });
   }
 }

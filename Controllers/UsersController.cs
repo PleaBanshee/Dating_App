@@ -105,6 +105,7 @@ namespace Dating_App.Controllers
         [HttpPut("set-profile-pic/{photoId}")] // api/users/set-profile-pic/{id}
         public async Task<ActionResult> SetProfilePic(int photoId)
         {
+            // TODO: set value for last updated field
             var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
             if (user == null) return NotFound();
 

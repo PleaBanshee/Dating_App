@@ -46,7 +46,8 @@ namespace Dating_App.Controllers
             return new UserDto
             {
                 Username = user.UserName,
-                Token = _tokenService.CreateToken(user)
+                Token = _tokenService.CreateToken(user),
+                PhotoUrl = ""
             };
         }
 
@@ -59,7 +60,9 @@ namespace Dating_App.Controllers
         [HttpPost("login")] // api/account/login?username={username}&password={password}
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
-            var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == loginDto.Username.ToLower());
+            var user = await _context.Users
+                .Include(p => p.Photos) // link to Photos entity, otherwise the user's photo field will remain empty
+                .SingleOrDefaultAsync(x => x.UserName == loginDto.Username.ToLower());
 
             if (user == null) return Unauthorized("Invalid username");
 
@@ -76,7 +79,8 @@ namespace Dating_App.Controllers
             return new UserDto
             {
                 Username = user.UserName,
-                Token = _tokenService.CreateToken(user)
+                Token = _tokenService.CreateToken(user),
+                PhotoUrl = user.Photos.FirstOrDefault(x => x.IsProfilePic)?.Url
             };
         }
 
