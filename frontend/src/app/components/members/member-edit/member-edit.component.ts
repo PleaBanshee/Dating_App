@@ -23,7 +23,7 @@ export class MemberEditComponent implements OnInit {
     }
   }
   member: Member | undefined;
-  user: User | null = null;
+  user: User | undefined;
 
   constructor(
     private accountService: AccountService,
@@ -32,7 +32,9 @@ export class MemberEditComponent implements OnInit {
   ) {
     this.accountService.currentUser$.pipe(take(1)).subscribe({
       next: (user) => {
-        this.user = user;
+        if (user) {
+          this.user = user;
+        }
       },
     });
   }
