@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { AccountService } from 'src/app/services/account.service';
 
@@ -7,14 +8,27 @@ import { AccountService } from 'src/app/services/account.service';
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit {
   @Output() cancelRegister = new EventEmitter<boolean>(); // Child to Parent data sharing
   user: any = {};
+  registerForm: FormGroup = new FormGroup({});
 
   constructor(
     private accountService: AccountService,
     private toaster: ToastrService
   ) {}
+
+  ngOnInit(): void {
+    this.initializeForm();
+  }
+
+  initializeForm() {
+    this.registerForm = new FormGroup({
+      username: new FormControl(),
+      password: new FormControl(),
+      confirmPassword: new FormControl(),
+    });
+  }
 
   register() {
     this.accountService.register(this.user).subscribe({

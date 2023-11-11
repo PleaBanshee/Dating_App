@@ -14,7 +14,7 @@ export class AccountService {
 
   constructor(private httpClient: HttpClient) {}
 
-  login(user: any) {
+  login(user: User) {
     return this.httpClient
       .post<User>(`${environment.apiUrl}/account/login`, user)
       .pipe(
@@ -28,7 +28,7 @@ export class AccountService {
       );
   }
 
-  register(user: any) {
+  register(user: User) {
     return this.httpClient
       .post<User>(`${environment.apiUrl}/account/register`, user)
       .pipe(

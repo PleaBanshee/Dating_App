@@ -1,5 +1,5 @@
 <form
-  #registerForm
+  [formGroup]="registerForm"
   class="form-container"
   (ngSubmit)="register()"
   autocomplete="off"
@@ -10,8 +10,7 @@
     <input
       type="text"
       class="form-control"
-      name="username"
-      [(ngModel)]="user.username"
+      formControlName="username"
       placeholder="Username"
     />
   </div>
@@ -19,9 +18,16 @@
     <input
       type="password"
       class="form-control"
-      name="password"
-      [(ngModel)]="user.password"
+      formControlName="password"
       placeholder="Password"
+    />
+  </div>
+  <div class="mb-3">
+    <input
+      type="password"
+      class="form-control"
+      formControlName="confirmPassword"
+      placeholder="Confirm Password"
     />
   </div>
   <div class="text-center">
