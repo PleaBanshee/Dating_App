@@ -126,6 +126,7 @@ namespace Dating_App.Controllers
             if (currentMain != null) currentMain.IsProfilePic = false;
 
             photo.IsProfilePic = true;
+            photo.LastUpdated = DateTime.UtcNow;
             if (await _userRepository.SaveAllAsync()) return NoContent();
             return BadRequest("Failed to set main photo");
         }
