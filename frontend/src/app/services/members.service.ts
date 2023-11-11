@@ -54,4 +54,10 @@ export class MembersService {
       {}
     );
   }
+
+  deletePhoto(photoId: number) {
+    return this.httpClient.delete(
+      `${environment.apiUrl}/users/delete-photo/${photoId}`
+    );
+  }
 }

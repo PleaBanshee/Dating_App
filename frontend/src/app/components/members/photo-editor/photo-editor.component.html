@@ -14,7 +14,13 @@
       >
         Main
       </button>
-      <button class="btn btn-danger"><i class="fa fa-trash"></i></button>
+      <button
+        class="btn btn-danger"
+        [disabled]="photo.isProfilePic"
+        (click)="deletePhoto(photo.id)"
+      >
+        <i class="fa fa-trash"></i>
+      </button>
     </div>
   </div>
 </div>
