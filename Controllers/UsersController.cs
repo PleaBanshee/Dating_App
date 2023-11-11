@@ -55,12 +55,19 @@ namespace Dating_App.Controllers
 
             if (user == null) return NotFound();
 
+            var originalUser = _mapper.Map(memberUpdateDto, user);
+
+            // Compare the original user with the updated user
+            if (user.Equals(originalUser))
+            {
+                return BadRequest("No values have been updated");
+            }
+
             _mapper.Map(memberUpdateDto, user);
             _userRepository.Update(user);
 
             if (await _userRepository.SaveAllAsync()) return NoContent(); // OK status for updates: 204
 
-            // TODO: return message or status for updating content with same values
             return BadRequest("Failed to update user");
         }
 
