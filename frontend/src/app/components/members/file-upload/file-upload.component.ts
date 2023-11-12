@@ -53,6 +53,11 @@ export class FileUploadComponent implements OnInit {
       if (response) {
         const photo = JSON.parse(response);
         this.member?.photos.push(photo);
+        if (photo.isProfilePic && this.user && this.member) {
+          this.user.photoUrl = photo.url; // set the navbar profile pic
+          this.member.photoUrl = photo.url;
+          this.accountService.setCurrentUser(this.user);
+        }
       }
     };
   }
