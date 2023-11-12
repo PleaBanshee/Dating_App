@@ -7,6 +7,7 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AccountService } from 'src/app/services/account.service';
 
@@ -17,15 +18,16 @@ import { AccountService } from 'src/app/services/account.service';
 })
 export class RegisterComponent implements OnInit {
   @Output() cancelRegister = new EventEmitter<boolean>(); // Child to Parent data sharing
-  user: any = {};
   registerForm: FormGroup = new FormGroup({});
   maxDate: Date = new Date();
   minDate: Date = new Date();
+  validationErrors: string[] = [];
 
   constructor(
     private accountService: AccountService,
     private toaster: ToastrService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -75,17 +77,28 @@ export class RegisterComponent implements OnInit {
     };
   }
 
+  handleDateOfBirth(dob: Date | undefined) {
+    if (!dob) return;
+    return dob.toISOString().split('T')[0];
+  }
+
+  // TODO: fix date input and user exists error message
   register() {
-    this.accountService.register(this.user).subscribe({
+    const dob = this.handleDateOfBirth(
+      this.registerForm.controls['dateOfBirth']?.value
+    );
+    this.registerForm.controls['dateOfBirth'].setValue(dob);
+    const user = { ...this.registerForm.value };
+    this.accountService.register(user).subscribe({
       next: () => {
-        this.cancel();
+        this.router.navigateByUrl('/members');
       },
       error: (err) => {
         console.log(err.error.errors);
-        this.toaster.error(
-          `${err.error.errors.Password ?? err.error.errors.Username}`,
-          'ERROR'
-        );
+        if (err.error === 'User already exists') {
+          this.toaster.error('This user already exists', 'ERROR');
+        }
+        this.validationErrors = err;
       },
     });
   }
