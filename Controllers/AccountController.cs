@@ -1,4 +1,5 @@
-﻿using Dating_App.Data;
+﻿using AutoMapper;
+using Dating_App.Data;
 using Dating_App.DTOs;
 using Dating_App.Entities;
 using Dating_App.Interfaces;
@@ -14,11 +15,13 @@ namespace Dating_App.Controllers
     public class AccountController : BaseApiController
     {
         private readonly DataContext _context;
+        private readonly IMapper _mapper;
         private readonly ITokenService _tokenService;
 
-        public AccountController(DataContext context, ITokenService tokenService)
+        public AccountController(DataContext context, IMapper mapper, ITokenService tokenService)
         {
             _context = context;
+            _mapper = mapper;
             _tokenService = tokenService;
         }
 
@@ -27,17 +30,15 @@ namespace Dating_App.Controllers
         {
             if (await UserExists(registerDto.Username)) return BadRequest("User already exists");
 
+            var user = _mapper.Map<AppUser>(registerDto); // maps the registerDto to an AppUser object
 
             // using statement ensures that the object is disposed of when it's no longer needed
             using var hmac = new HMACSHA512();
-            
+
             // password salt: is used to create a unique password hash for each user
-            var user = new AppUser
-            {
-                UserName = registerDto.Username.ToLower(),
-                PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password)),
-                PasswordSalt = hmac.Key
-            };
+            user.UserName = registerDto.Username.ToLower();
+            user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password));
+            user.PasswordSalt = hmac.Key;
 
             // Add user to the database
             _context.Users.Add(user);
@@ -47,7 +48,8 @@ namespace Dating_App.Controllers
             {
                 Username = user.UserName,
                 Token = _tokenService.CreateToken(user),
-                PhotoUrl = ""
+                PhotoUrl = "",
+                FullName = user.FullName
             };
         }
 
@@ -80,7 +82,8 @@ namespace Dating_App.Controllers
             {
                 Username = user.UserName,
                 Token = _tokenService.CreateToken(user),
-                PhotoUrl = user.Photos.FirstOrDefault(x => x.IsProfilePic)?.Url
+                PhotoUrl = user.Photos.FirstOrDefault(x => x.IsProfilePic)?.Url,
+                FullName = user.FullName
             };
         }
 
