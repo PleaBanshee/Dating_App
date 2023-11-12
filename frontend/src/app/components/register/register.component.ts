@@ -19,6 +19,8 @@ export class RegisterComponent implements OnInit {
   @Output() cancelRegister = new EventEmitter<boolean>(); // Child to Parent data sharing
   user: any = {};
   registerForm: FormGroup = new FormGroup({});
+  maxDate: Date = new Date();
+  minDate: Date = new Date();
 
   constructor(
     private accountService: AccountService,
@@ -28,6 +30,8 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeForm();
+    this.maxDate.setFullYear(this.maxDate.getFullYear() - 18);
+    this.minDate.setFullYear(Math.abs(this.maxDate.getFullYear() - 100));
   }
 
   initializeForm() {

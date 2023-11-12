@@ -25,6 +25,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { PhotoEditorComponent } from './components/members/photo-editor/photo-editor.component';
 import { FileUploadComponent } from './components/members/file-upload/file-upload.component';
 import { TextInputComponent } from './components/forms/text-input/text-input.component';
+import { DatePickerComponent } from './components/forms/date-picker/date-picker.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { TextInputComponent } from './components/forms/text-input/text-input.com
     PhotoEditorComponent,
     FileUploadComponent,
     TextInputComponent,
+    DatePickerComponent,
   ],
   imports: [
     BrowserModule,
