@@ -24,6 +24,7 @@ import { LoadingInterceptor } from './interceptors/loading.interceptor';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { PhotoEditorComponent } from './components/members/photo-editor/photo-editor.component';
 import { FileUploadComponent } from './components/members/file-upload/file-upload.component';
+import { TextInputComponent } from './components/forms/text-input/text-input.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { FileUploadComponent } from './components/members/file-upload/file-uploa
     MemberEditComponent,
     PhotoEditorComponent,
     FileUploadComponent,
+    TextInputComponent,
   ],
   imports: [
     BrowserModule,
