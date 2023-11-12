@@ -12,6 +12,23 @@
     [label]="'Username'"
   ></app-text-input>
   <app-text-input
+    [formControl]="$any(registerForm.controls['fullName'])"
+    [label]="'Full Name'"
+  ></app-text-input>
+  <app-text-input
+    [formControl]="$any(registerForm.controls['dateOfBirth'])"
+    [label]="'Date of Birth'"
+    [type]="'date'"
+  ></app-text-input>
+  <app-text-input
+    [formControl]="$any(registerForm.controls['city'])"
+    [label]="'City'"
+  ></app-text-input>
+  <app-text-input
+    [formControl]="$any(registerForm.controls['country'])"
+    [label]="'Country'"
+  ></app-text-input>
+  <app-text-input
     [formControl]="$any(registerForm.controls['password'])"
     [label]="'Password'"
     [type]="'password'"
@@ -21,7 +38,27 @@
     [label]="'Confirmation Password'"
     [type]="'password'"
   ></app-text-input>
-  <div class="text-center">
+  <div class="mb-3 d-flex flex-row justify-content-center">
+    <label class="form-check-label me-5">
+      <input
+        type="radio"
+        class="form-check-input"
+        value="male"
+        formControlName="gender"
+      />
+      Male
+    </label>
+    <label class="form-check-label ms-5">
+      <input
+        type="radio"
+        class="form-check-input"
+        value="female"
+        formControlName="gender"
+      />
+      Female
+    </label>
+  </div>
+  <div class="text-center div-btns">
     <button
       class="btn btn-success me-2"
       type="submit"
