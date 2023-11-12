@@ -9,26 +9,79 @@
   <div class="mb-3">
     <input
       type="text"
+      [ngClass]="
+        registerForm.get('username')?.invalid &&
+        registerForm.get('username')?.touched
+          ? 'is-invalid'
+          : ''
+      "
       class="form-control"
       formControlName="username"
       placeholder="Username"
     />
+    <div class="invalid-feedback">Please enter a username</div>
   </div>
   <div class="mb-3">
     <input
       type="password"
+      [ngClass]="
+        registerForm.get('password')?.invalid &&
+        registerForm.get('password')?.touched
+          ? 'is-invalid'
+          : ''
+      "
       class="form-control"
       formControlName="password"
       placeholder="Password"
     />
+    <div
+      class="invalid-feedback"
+      *ngIf="registerForm.get('password')?.hasError('required')"
+    >
+      Please enter a password
+    </div>
+    <div
+      class="invalid-feedback"
+      *ngIf="registerForm.get('password')?.hasError('minlength')"
+    >
+      Password needs to be at least eight characters
+    </div>
+    <div
+      class="invalid-feedback"
+      *ngIf="registerForm.get('password')?.hasError('maxlength')"
+    >
+      Maximum password length exceeded
+    </div>
   </div>
   <div class="mb-3">
     <input
       type="password"
+      [ngClass]="
+        registerForm.get('confirmPassword')?.invalid &&
+        registerForm.get('confirmPassword')?.touched
+          ? 'is-invalid'
+          : ''
+      "
       class="form-control"
       formControlName="confirmPassword"
       placeholder="Confirm Password"
     />
+    <div
+      class="invalid-feedback"
+      *ngIf="registerForm.get('confirmPassword')?.hasError('required')"
+    >
+      Please confirm your password
+    </div>
+    <!-- notMatching returned from custom validator -->
+    <div
+      class="invalid-feedback"
+      *ngIf="
+        registerForm.get('confirmPassword')?.hasError('notMatching') &&
+        !registerForm.get('confirmPassword')?.hasError('required')
+      "
+    >
+      Passwords do not match
+    </div>
   </div>
   <div class="text-center">
     <button

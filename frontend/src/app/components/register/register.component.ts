@@ -48,6 +48,9 @@ export class RegisterComponent implements OnInit {
     });
   }
 
+  // Compares the values of the two password controls
+  // The outer function returns an inner function that represents the validator function
+  // If the values don't match, returns an object with an error key
   matchValues(matchTo: string): ValidatorFn {
     return (control: AbstractControl) => {
       return control.value === control.parent?.get(matchTo)?.value
