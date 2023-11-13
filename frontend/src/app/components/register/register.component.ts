@@ -21,7 +21,7 @@ export class RegisterComponent implements OnInit {
   registerForm: FormGroup = new FormGroup({});
   maxDate: Date = new Date();
   minDate: Date = new Date();
-  validationErrors: string[] = [];
+  validationErrors: string[] | undefined;
 
   constructor(
     private accountService: AccountService,
@@ -77,28 +77,31 @@ export class RegisterComponent implements OnInit {
     };
   }
 
-  handleDateOfBirth(dob: Date | undefined) {
+  handleDateOfBirth(dob: string | undefined) {
     if (!dob) return;
-    return dob.toISOString().split('T')[0];
+    let userDateOfBirth = new Date(dob);
+    return new Date(
+      userDateOfBirth.setMinutes(
+        userDateOfBirth.getMinutes() - userDateOfBirth.getTimezoneOffset()
+      )
+    )
+      .toISOString()
+      .slice(0, 10);
   }
 
-  // TODO: fix date input and user exists error message
   register() {
     const dob = this.handleDateOfBirth(
       this.registerForm.controls['dateOfBirth']?.value
     );
-    this.registerForm.controls['dateOfBirth'].setValue(dob);
-    const user = { ...this.registerForm.value };
+    // spreads properties to user object and assigns DOB field to dob obj
+    const user = { ...this.registerForm.value, dateOfBirth: dob };
     this.accountService.register(user).subscribe({
       next: () => {
         this.router.navigateByUrl('/members');
       },
       error: (err) => {
-        console.log(err.error.errors);
-        if (err.error === 'User already exists') {
-          this.toaster.error('This user already exists', 'ERROR');
-        }
         this.validationErrors = err;
+        console.log(err.error.errors);
       },
     });
   }

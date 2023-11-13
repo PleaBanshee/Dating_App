@@ -28,7 +28,7 @@ namespace Dating_App.Controllers
         [HttpPost("register")] // api/account/register?username={username}&password={password}
         public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
         {
-            if (await UserExists(registerDto.Username)) return BadRequest("User already exists");
+            if (await UserExists(registerDto.Username)) return BadRequest("This user already exists");
 
             var user = _mapper.Map<AppUser>(registerDto); // maps the registerDto to an AppUser object
 
