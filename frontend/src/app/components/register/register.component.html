@@ -44,7 +44,7 @@
       <input
         type="radio"
         class="form-check-input"
-        value="male"
+        value="Male"
         formControlName="gender"
       />
       Male
@@ -53,13 +53,13 @@
       <input
         type="radio"
         class="form-check-input"
-        value="female"
+        value="Female"
         formControlName="gender"
       />
       Female
     </label>
   </div>
-  <div class="row" *ngIf="validationErrors">
+  <div class="row" *ngIf="validationErrors && validationErrors.length > 0">
     <ul class="text-danger">
       <li *ngFor="let error of validationErrors">
         {{ error }}
