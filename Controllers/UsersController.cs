@@ -6,6 +6,7 @@ using Dating_App.DTOs;
 using System.Security.Claims;
 using Dating_App.Extensions;
 using Dating_App.Entities;
+using Dating_App.Helpers;
 
 namespace Dating_App.Controllers
 {
@@ -26,29 +27,32 @@ namespace Dating_App.Controllers
             _photoService = photoService;
         }
 
-        [HttpGet] // api/users
-        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers()
+        [HttpGet] // api/users --- parameter passed comes from query string
+        public async Task<ActionResult<PagedList<MemberDto>>> GetMembers([FromQuery]UserParams userParams)
         {
-            var users = await _userRepository.GetMembersAsync();
+            var users = await _userRepository.GetMembersAsync(userParams);
+
+            // adds pagination headers to response
+            Response.AddPaginationHeader(new PaginationHeader(users.CurrentPage, users.PageSize, users.TotalCount, users.TotalPages));
 
             // returns status code and users
             return Ok(users);
         }
 
         [HttpGet("{username}")] // api/users/{username}
-        public async Task<ActionResult<MemberDto>> GetUser(string userName)
+        public async Task<ActionResult<MemberDto>> GetMember(string userName)
         {
             return await _userRepository.GetMemberByUsernameAsync(userName);
         }
 
         [HttpGet("{id:int}")] // api/users/{id}
-        public async Task<ActionResult<MemberDto>> GetUser(int id)
+        public async Task<ActionResult<MemberDto>> GetMember(int id)
         {
             return await _userRepository.GetMemberByIdAsync(id);
         }
 
         [HttpPut] // api/users
-        public async Task<ActionResult> UpdateUser(MemberUpdateDto memberUpdateDto)
+        public async Task<ActionResult> UpdateMember(MemberUpdateDto memberUpdateDto)
         {
             //  extracts the username of the currently authenticated user from their claims
             var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
