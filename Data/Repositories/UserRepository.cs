@@ -34,7 +34,9 @@ namespace Dating_App.Data.Repositories
 
         public async Task<IEnumerable<MemberDto>> GetMembersAsync()
         {
-            return await _context.Users.ProjectTo<MemberDto>(_mapper.ConfigurationProvider).ToListAsync();
+            return await _context.Users
+                .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
+                .ToListAsync();
         }
 
         public async Task<AppUser> GetUserByIdAsync(int id)
