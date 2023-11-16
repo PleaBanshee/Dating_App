@@ -1,26 +1,63 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Member } from '../models/member';
-import { map, of } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
+import { PaginatedResults } from '../models/pagination';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MembersService {
   members: Member[] = [];
+  paginatedResult: PaginatedResults<Member[]> = new PaginatedResults<
+    Member[]
+  >();
 
   constructor(private httpClient: HttpClient) {}
 
   // returns an observable with the cached data (if any) to avoid making another API request
-  getMembers() {
-    if (this.members.length > 0) return of(this.members); // converts to observable
-    return this.httpClient.get<Member[]>(`${environment.apiUrl}/users`).pipe(
-      map((members) => {
-        this.members = members;
-        return this.members;
+  // page number & items per page is optional, as you get a default value from the API
+  getMembers(
+    page?: number,
+    itemsPerPage?: number
+  ): Observable<PaginatedResults<Member[]>> {
+    let params = new HttpParams();
+    if (page && itemsPerPage) {
+      params = params.append('pageNumber', page);
+      params = params.append('pageSize', itemsPerPage);
+    }
+    if (this.members.length > 0) {
+      const paginatedResult: PaginatedResults<Member[]> = {
+        result: this.members,
+        pagination: {
+          currentPage: 1, // Adjust with your default values
+          totalPages: 1,
+          totalItems: this.members.length,
+          itemsPerPage: this.members.length,
+        },
+      };
+      return of(paginatedResult);
+    }
+
+    // Full HTTP response should be observed, and any query parameters should be included.
+    return this.httpClient
+      .get<Member[]>(`${environment.apiUrl}/users`, {
+        observe: 'response',
+        params,
       })
-    );
+      .pipe(
+        map((res) => {
+          if (res.body) {
+            this.paginatedResult.result = res.body ?? [];
+          }
+          const pagination = res.headers.get('Pagination');
+          if (pagination) {
+            this.paginatedResult.pagination = JSON.parse(pagination);
+          }
+          return this.paginatedResult ?? [];
+        })
+      );
   }
 
   getMemberByName(username: string) {
