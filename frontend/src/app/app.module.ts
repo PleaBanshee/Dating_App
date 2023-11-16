@@ -26,6 +26,7 @@ import { PhotoEditorComponent } from './components/members/photo-editor/photo-ed
 import { FileUploadComponent } from './components/members/file-upload/file-upload.component';
 import { TextInputComponent } from './components/forms/text-input/text-input.component';
 import { DatePickerComponent } from './components/forms/date-picker/date-picker.component';
+import { PaginationComponent } from './components/pagination/pagination.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { DatePickerComponent } from './components/forms/date-picker/date-picker.
     FileUploadComponent,
     TextInputComponent,
     DatePickerComponent,
+    PaginationComponent,
   ],
   imports: [
     BrowserModule,

@@ -18,11 +18,11 @@ export class MemberListComponent implements OnInit {
   constructor(private memberService: MembersService) {}
 
   ngOnInit() {
-    this.loadMembers();
+    this.loadMembers(this.pageNumber);
   }
 
-  loadMembers() {
-    this.memberService.getMembers(this.pageNumber, this.pageSize).subscribe({
+  loadMembers(pageNumber: number) {
+    this.memberService.getMembers(pageNumber, this.pageSize).subscribe({
       next: (res: PaginatedResults<Member[]>) => {
         if (res.result && res.pagination) {
           this.members$ = of(res.result ?? []);

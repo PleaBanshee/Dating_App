@@ -1,0 +1,15 @@
+<div class="d-flex justify-content-center">
+  <pagination
+    [boundaryLinks]="true"
+    [totalItems]="pagination?.totalItems || 0"
+    [itemsPerPage]="pagination?.itemsPerPage || 5"
+    [maxSize]="10"
+    [ngModel]="pagination ? pagination.currentPage : undefined"
+    (pageChanged)="pageChanged($event)"
+    previousText="&lsaquo;"
+    nextText="&rsaquo;"
+    firstText="&laquo;"
+    lastText="&raquo;"
+  >
+  </pagination>
+</div>
