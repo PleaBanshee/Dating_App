@@ -49,7 +49,8 @@ namespace Dating_App.Controllers
                 Username = user.UserName,
                 Token = _tokenService.CreateToken(user),
                 PhotoUrl = "",
-                FullName = user.FullName
+                FullName = user.FullName,
+                Gender = user.Gender,
             };
         }
 
@@ -83,7 +84,8 @@ namespace Dating_App.Controllers
                 Username = user.UserName,
                 Token = _tokenService.CreateToken(user),
                 PhotoUrl = user.Photos.FirstOrDefault(x => x.IsProfilePic)?.Url,
-                FullName = user.FullName
+                FullName = user.FullName,
+                Gender = user.Gender,
             };
         }
 
