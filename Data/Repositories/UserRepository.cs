@@ -36,11 +36,18 @@ namespace Dating_App.Data.Repositories
         // Get members with pagination details
         public async Task<PagedList<MemberDto>> GetMembersAsync(UserParams userParams)
         {
-            var query = _context.Users
-                .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
-                .AsNoTracking(); // does not keep track of entity, improves performance and because the list is not updated
+            var query = _context.Users.AsQueryable();
 
-            return await PagedList<MemberDto>.CreateAsync(query, userParams.PageNumber, userParams.PageSize);
+            query = query.Where(u => u.UserName != userParams.CurrentUsername);
+
+            query = query.Where(u => u.Gender == userParams.Gender);
+
+            // does not keep track of entity, improves performance and because the list is read-only
+            return await PagedList<MemberDto>.CreateAsync(
+                query.AsNoTracking().ProjectTo<MemberDto>(_mapper.ConfigurationProvider),
+                userParams.PageNumber,
+                userParams.PageSize
+                );
         }
 
         public async Task<AppUser> GetUserByIdAsync(int id)
