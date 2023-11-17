@@ -33,6 +33,9 @@ namespace Dating_App.Extensions
             // Registers Photo Service
             services.AddScoped<IPhotoService, PhotoService>();
 
+            // Registers logging user activity service
+            services.AddScoped<LogUserActivity>();
+
             return services;
         }
     }
