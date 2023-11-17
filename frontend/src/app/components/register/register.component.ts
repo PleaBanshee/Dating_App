@@ -2,7 +2,6 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
-  FormControl,
   FormGroup,
   ValidatorFn,
   Validators,
@@ -39,7 +38,7 @@ export class RegisterComponent implements OnInit {
   initializeForm() {
     this.registerForm = this.fb.group({
       username: ['', Validators.required],
-      gender: ['Male', Validators.required],
+      gender: ['male', Validators.required],
       fullName: ['', Validators.required],
       dateOfBirth: ['', Validators.required],
       city: ['', Validators.required],
