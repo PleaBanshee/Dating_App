@@ -18,10 +18,11 @@ namespace Dating_App.Services
 
         public string CreateToken(AppUser user)
         {
-            // claims are the data we want to store inside the token (in this case the username)
+            // claims are the data we want to store inside the token (in this case the id and username)
             var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.NameId, user.UserName)
+                new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName)
             };
 
             var credentials = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);

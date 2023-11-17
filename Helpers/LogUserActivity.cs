@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 namespace Dating_App.Helpers
 {
     // Log the last activity of a user after an action is executed.
+    // Makes use of the ClaimsPrincipleExtension class to get the user's id.
     public class LogUserActivity : IAsyncActionFilter
     {
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
@@ -13,11 +14,11 @@ namespace Dating_App.Helpers
 
             if (!resultContext.HttpContext.User.Identity.IsAuthenticated) return;
 
-            var userName = resultContext.HttpContext.User.GetUsername();
+            var userId = resultContext.HttpContext.User.GetUserId();
 
             var repo = resultContext.HttpContext.RequestServices.GetService<IUserRepository>();
 
-            var user = await repo.GetUserByUsernameAsync(userName);
+            var user = await repo.GetUserByIdAsync(userId);
 
             user.LastActive = DateTime.UtcNow;
 
