@@ -88,6 +88,5 @@ namespace Dating_App.Controllers
                 Gender = user.Gender,
             };
         }
-
     }
 }
