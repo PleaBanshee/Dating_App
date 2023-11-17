@@ -6,6 +6,7 @@
 </div>
 <app-pagination
   [pagination]="pagination"
-  (pageChangedEmitter)="loadMembers($event)"
+  [userParams]="userParams"
+  (pageChangedEmitter)="loadMembers()"
   *ngIf="pagination"
 ></app-pagination>

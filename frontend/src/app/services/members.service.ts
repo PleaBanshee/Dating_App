@@ -4,60 +4,63 @@ import { environment } from 'src/environments/environment';
 import { Member } from '../models/member';
 import { Observable, map, of } from 'rxjs';
 import { PaginatedResults } from '../models/pagination';
+import { UserParams } from '../models/user-params';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MembersService {
   members: Member[] = [];
-  paginatedResult: PaginatedResults<Member[]> = new PaginatedResults<
-    Member[]
-  >();
 
   constructor(private httpClient: HttpClient) {}
 
-  // returns an observable with the cached data (if any) to avoid making another API request
   // page number & items per page is optional, as you get a default value from the API
-  getMembers(
-    page?: number,
-    itemsPerPage?: number
-  ): Observable<PaginatedResults<Member[]>> {
-    let params = new HttpParams();
-    if (page && itemsPerPage) {
-      params = params.append('pageNumber', page);
-      params = params.append('pageSize', itemsPerPage);
-    }
-    if (this.members.length > 0) {
-      const paginatedResult: PaginatedResults<Member[]> = {
-        result: this.members,
-        pagination: {
-          currentPage: 1, // Adjust with your default values
-          totalPages: 1,
-          totalItems: this.members.length,
-          itemsPerPage: this.members.length,
-        },
-      };
-      return of(paginatedResult);
-    }
+  getMembers(userParams: UserParams): Observable<PaginatedResults<Member[]>> {
+    let params = this.getPaginationHeaders(
+      userParams.pageNumber,
+      userParams.pageSize
+    );
 
+    params = params.append('minAge', userParams.minAge);
+    params = params.append('maxAge', userParams.maxAge);
+    params = params.append('gender', userParams.gender);
+
+    return this.getPaginatedResult<Member[]>(
+      `${environment.apiUrl}/users`,
+      params
+    );
+  }
+
+  private getPaginatedResult<T>(
+    url: string,
+    params: HttpParams
+  ): Observable<PaginatedResults<T>> {
+    const paginatedResult: PaginatedResults<T> = new PaginatedResults<T>();
     // Full HTTP response should be observed, and any query parameters should be included.
     return this.httpClient
-      .get<Member[]>(`${environment.apiUrl}/users`, {
+      .get<PaginatedResults<T>>(url, {
         observe: 'response',
         params,
       })
       .pipe(
         map((res) => {
           if (res.body) {
-            this.paginatedResult.result = res.body ?? [];
+            paginatedResult.result = res.body as T;
           }
           const pagination = res.headers.get('Pagination');
           if (pagination) {
-            this.paginatedResult.pagination = JSON.parse(pagination);
+            paginatedResult.pagination = JSON.parse(pagination);
           }
-          return this.paginatedResult ?? [];
+          return paginatedResult as PaginatedResults<T>;
         })
       );
+  }
+
+  private getPaginationHeaders(pageNumber: number, pageSize: number) {
+    let params = new HttpParams();
+    params = params.append('pageNumber', pageNumber);
+    params = params.append('pageSize', pageSize);
+    return params;
   }
 
   getMemberByName(username: string) {
@@ -80,7 +83,8 @@ export class MembersService {
       map(() => {
         // no value is passed, because it is a put method
         const index = this.members.indexOf(member);
-        this.members[index] = { ...this.members[index], ...member }; // updating member value by cloning of the object using the spread operator
+        // updating member value by cloning of the object using the spread operator
+        this.members[index] = { ...this.members[index], ...member };
       })
     );
   }
