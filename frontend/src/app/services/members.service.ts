@@ -2,9 +2,11 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Member } from '../models/member';
-import { Observable, map, of } from 'rxjs';
+import { Observable, map, of, take } from 'rxjs';
 import { PaginatedResults } from '../models/pagination';
 import { UserParams } from '../models/user-params';
+import { AccountService } from './account.service';
+import { User } from '../models/user';
 
 @Injectable({
   providedIn: 'root',
@@ -12,8 +14,38 @@ import { UserParams } from '../models/user-params';
 export class MembersService {
   members: Member[] = [];
   memberCache = new Map(); // used to store key-value pairs
+  user: User | undefined;
+  userParams: UserParams | undefined;
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(
+    private httpClient: HttpClient,
+    private accountService: AccountService
+  ) {
+    this.accountService.currentUser$.pipe(take(1)).subscribe({
+      next: (user) => {
+        if (user) {
+          this.userParams = new UserParams(user);
+          this.user = user;
+        }
+      },
+    });
+  }
+
+  getUserParams() {
+    return this.userParams;
+  }
+
+  setUserParams(params: UserParams) {
+    this.userParams = params;
+  }
+
+  resetUserParams() {
+    if (this.user) {
+      this.userParams = new UserParams(this.user);
+      return this.userParams;
+    }
+    return;
+  }
 
   // page number & items per page is optional, as you get a default value from the API
   getMembers(userParams: UserParams): Observable<PaginatedResults<Member[]>> {
