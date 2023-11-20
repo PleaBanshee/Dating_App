@@ -37,8 +37,10 @@ namespace Dating_App.Entities
         public ICollection<Photo> Photos { get; set; } = new List<Photo>();
 
         // This is a many-to-many relationship
-        [NotMapped]
-        public ICollection<UserLikes> LikedByUsers { get; set; } = new List<UserLikes>();
+        public ICollection<UserLike> LikedByUsers { get; set; } = new List<UserLike>();
+
+        // This is a many-to-many relationship
+        public ICollection<UserLike> LikedUsers { get; set; } = new List<UserLike>();
 
         public int GetAge() => DateOfBirth.CalculateAge();
     }
