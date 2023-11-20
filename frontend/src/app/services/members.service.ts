@@ -11,11 +11,15 @@ import { UserParams } from '../models/user-params';
 })
 export class MembersService {
   members: Member[] = [];
+  memberCache = new Map(); // used to store key-value pairs
 
   constructor(private httpClient: HttpClient) {}
 
   // page number & items per page is optional, as you get a default value from the API
   getMembers(userParams: UserParams): Observable<PaginatedResults<Member[]>> {
+    const response = this.memberCache.get(Object.values(userParams).join('-'));
+    if (response) return of(response);
+
     let params = this.getPaginationHeaders(
       userParams.pageNumber,
       userParams.pageSize
@@ -29,6 +33,11 @@ export class MembersService {
     return this.getPaginatedResult<Member[]>(
       `${environment.apiUrl}/users`,
       params
+    ).pipe(
+      map((response) => {
+        this.memberCache.set(Object.values(userParams).join('-'), response);
+        return response;
+      })
     );
   }
 
