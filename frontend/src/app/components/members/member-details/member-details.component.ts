@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { GalleryItem, GalleryModule, ImageItem } from 'ng-gallery';
 import { TabsModule } from 'ngx-bootstrap/tabs';
+import { TimeagoModule } from 'ngx-timeago';
 import { Member } from 'src/app/models/member';
 import { MembersService } from 'src/app/services/members.service';
 
@@ -11,7 +12,7 @@ import { MembersService } from 'src/app/services/members.service';
   standalone: true, // component manages its dependencies via imports, not modules
   templateUrl: './member-details.component.html',
   styleUrls: ['./member-details.component.scss'],
-  imports: [CommonModule, TabsModule, GalleryModule], // imports for standalone component
+  imports: [CommonModule, TabsModule, GalleryModule, TimeagoModule], // imports for standalone component
 })
 export class MemberDetailsComponent implements OnInit {
   member: Member | undefined;
