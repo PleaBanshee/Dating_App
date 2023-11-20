@@ -1,6 +1,7 @@
 ﻿namespace Dating_App.Entities
 {
-    public class UserLikes
+    // Serves as bridging entity (table) for many-to-many relationship
+    public class UserLike
     {
         public AppUser SourceUser { get; set; }
 
