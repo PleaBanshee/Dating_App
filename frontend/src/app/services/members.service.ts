@@ -17,6 +17,8 @@ export class MembersService {
 
   // page number & items per page is optional, as you get a default value from the API
   getMembers(userParams: UserParams): Observable<PaginatedResults<Member[]>> {
+    // string acts as a unique key for each combination of user parameters.
+    // returns caching object if found
     const response = this.memberCache.get(Object.values(userParams).join('-'));
     if (response) return of(response);
 
@@ -74,7 +76,12 @@ export class MembersService {
   }
 
   getMemberByName(username: string) {
-    const member = this.members.find((user) => user.userName === username);
+    // stores flattened array of users
+    const member = [...this.memberCache.values()]
+      .reduce((arr, current) => arr.concat(current.result), [])
+      .find((member: Member) => {
+        return member.userName === username;
+      });
     if (member) return of(member);
     return this.httpClient.get<Member>(
       `${environment.apiUrl}/users/${username}`
