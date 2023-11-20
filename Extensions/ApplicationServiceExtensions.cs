@@ -36,6 +36,9 @@ namespace Dating_App.Extensions
             // Registers logging user activity service
             services.AddScoped<LogUserActivity>();
 
+            // Registers Likes Repository
+            services.AddScoped<ILikesRepository, LikesRepository>();
+
             return services;
         }
     }
