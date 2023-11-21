@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { Member } from 'src/app/models/member';
 import { PaginatedResults, Pagination } from 'src/app/models/pagination';
-import { User } from 'src/app/models/user';
 import { UserParams } from 'src/app/models/user-params';
 import { MembersService } from 'src/app/services/members.service';
 

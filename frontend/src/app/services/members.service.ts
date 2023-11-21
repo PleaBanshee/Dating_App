@@ -132,7 +132,7 @@ export class MembersService {
 
   getLikes(predicate: string) {
     const params = new HttpParams().set('predicate', predicate);
-    return this.httpClient.get(`${environment.apiUrl}/likes`, {
+    return this.httpClient.get<Member[]>(`${environment.apiUrl}/likes`, {
       params: params,
     });
   }

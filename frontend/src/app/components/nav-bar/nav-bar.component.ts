@@ -28,6 +28,7 @@ export class NavBarComponent {
     });
   }
 
+  // TODO: get cache to clear when logging out
   logout() {
     this.accountService.logout();
     this.router.navigateByUrl('/');
