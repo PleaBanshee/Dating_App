@@ -126,6 +126,17 @@ export class MembersService {
     return this.httpClient.get<Member>(`${environment.apiUrl}/users/${id}`);
   }
 
+  addLike(userName: string) {
+    return this.httpClient.post(`${environment.apiUrl}/likes/${userName}`, {});
+  }
+
+  getLikes(predicate: string) {
+    const params = new HttpParams().set('predicate', predicate);
+    return this.httpClient.get(`${environment.apiUrl}/likes`, {
+      params: params,
+    });
+  }
+
   // No need to specify anobservable when updating
   updateMember(member: Member) {
     return this.httpClient.put(`${environment.apiUrl}/users`, member).pipe(
