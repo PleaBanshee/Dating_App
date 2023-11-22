@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AccountService } from 'src/app/services/account.service';
+import { MembersService } from 'src/app/services/members.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -14,6 +15,7 @@ export class NavBarComponent {
 
   constructor(
     public accountService: AccountService,
+    private memberService: MembersService,
     private router: Router,
     private toaster: ToastrService
   ) {}
@@ -28,8 +30,8 @@ export class NavBarComponent {
     });
   }
 
-  // TODO: get cache to clear when logging out
   logout() {
+    this.memberService.resetUserParams();
     this.accountService.logout();
     this.router.navigateByUrl('/');
     this.user.username = '';

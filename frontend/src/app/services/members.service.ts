@@ -1,8 +1,8 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Member } from '../models/member';
-import { Observable, map, of, take } from 'rxjs';
+import { Observable, Subscription, map, of } from 'rxjs';
 import { PaginatedResults } from '../models/pagination';
 import { UserParams } from '../models/user-params';
 import { AccountService } from './account.service';
@@ -11,7 +11,8 @@ import { User } from '../models/user';
 @Injectable({
   providedIn: 'root',
 })
-export class MembersService {
+export class MembersService implements OnDestroy {
+  private currentUserSubscription: Subscription | undefined;
   members: Member[] = [];
   memberCache = new Map(); // used to store key-value pairs
   user: User | undefined;
@@ -21,14 +22,16 @@ export class MembersService {
     private httpClient: HttpClient,
     private accountService: AccountService
   ) {
-    this.accountService.currentUser$.pipe(take(1)).subscribe({
-      next: (user) => {
-        if (user) {
-          this.userParams = new UserParams(user);
-          this.user = user;
-        }
-      },
-    });
+    this.currentUserSubscription = this.accountService.currentUser$
+      .pipe()
+      .subscribe({
+        next: (user) => {
+          if (user) {
+            this.userParams = new UserParams(user);
+            this.user = user;
+          }
+        },
+      });
   }
 
   getUserParams() {
@@ -160,5 +163,11 @@ export class MembersService {
     return this.httpClient.delete(
       `${environment.apiUrl}/users/delete-photo/${photoId}`
     );
+  }
+
+  ngOnDestroy(): void {
+    if (this.currentUserSubscription) {
+      this.currentUserSubscription.unsubscribe();
+    }
   }
 }
