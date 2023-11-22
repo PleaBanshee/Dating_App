@@ -32,4 +32,10 @@
       <app-member-card [member]="member"></app-member-card>
     </div>
   </div>
+  <app-pagination
+    [pagination]="pagination"
+    [userParams]="userParams"
+    (pageChangedEmitter)="loadLikes()"
+    *ngIf="pagination"
+  ></app-pagination>
 </div>

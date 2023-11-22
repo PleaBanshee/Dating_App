@@ -133,11 +133,13 @@ export class MembersService implements OnDestroy {
     return this.httpClient.post(`${environment.apiUrl}/likes/${userName}`, {});
   }
 
-  getLikes(predicate: string) {
-    const params = new HttpParams().set('predicate', predicate);
-    return this.httpClient.get<Member[]>(`${environment.apiUrl}/likes`, {
-      params: params,
-    });
+  getLikes(predicate: string, pageNumber: number, pageSize: number) {
+    let params = this.getPaginationHeaders(pageNumber, pageSize);
+    params = params.append('predicate', predicate);
+    return this.getPaginatedResult<Member[]>(
+      `${environment.apiUrl}/likes`,
+      params
+    );
   }
 
   // No need to specify anobservable when updating
