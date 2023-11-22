@@ -1,6 +1,8 @@
 ﻿using Dating_App.DTOs;
 using Dating_App.Entities;
+using Dating_App.Helpers;
 using Dating_App.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Dating_App.Data.Repositories
@@ -21,25 +23,25 @@ namespace Dating_App.Data.Repositories
         }
 
         // Retrieves a list of users based on a specified predicate and user ID.
-        public async Task<IEnumerable<LikeDto>> GetUserLikes(string predicate, int userId)
+        public async Task<PagedList<LikeDto>> GetUserLikes(LikesParams likesParams)
         {
             var users = _context.Users.OrderBy(u => u.UserName).AsQueryable();
 
             var likes = _context.Likes.AsQueryable();
 
-            if (predicate == "liked") 
+            if (likesParams.Predicate == "liked") 
             {
-                likes = likes.Where(like => like.SourceUserId == userId);
+                likes = likes.Where(like => like.SourceUserId == likesParams.UserId);
                 users = likes.Select(like => like.LikedUser);
             }
 
-            if (predicate == "likedBy")
+            if (likesParams.Predicate == "likedBy")
             {
-                likes = likes.Where(like => like.LikedUserId == userId);
+                likes = likes.Where(like => like.LikedUserId == likesParams.UserId);
                 users = likes.Select(like => like.SourceUser);
             }
 
-            return await users.Select(user => new LikeDto
+            var likedUsers = users.Select(user => new LikeDto
             {
                 Id = user.Id,
                 UserName = user.UserName,
@@ -47,7 +49,9 @@ namespace Dating_App.Data.Repositories
                 FullName = user.FullName,
                 PhotoUrl = user.Photos.FirstOrDefault(p => p.IsProfilePic).Url,
                 City = user.City
-            }).ToListAsync();
+            });
+
+            return await PagedList<LikeDto>.CreateAsync(likedUsers, likesParams.PageNumber, likesParams.PageSize);
         }
 
         // Retrieves a user along with its associated liked users.
