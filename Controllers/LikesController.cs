@@ -1,6 +1,7 @@
 ﻿using Dating_App.DTOs;
 using Dating_App.Entities;
 using Dating_App.Extensions;
+using Dating_App.Helpers;
 using Dating_App.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -44,10 +45,16 @@ namespace Dating_App.Controllers
         }
 
         [HttpGet] // api/likes?{predicate}
-        public async Task<ActionResult<IEnumerable<LikeDto>>> GetUserLikes(string predicate)
+        public async Task<ActionResult<PagedList<LikeDto>>> GetUserLikes([FromQuery]LikesParams likesParams)
         {
-            var userId = User.GetUserId();
-            var users = await _likesRepository.GetUserLikes(predicate,userId);
+            likesParams.UserId = User.GetUserId();
+            var users = await _likesRepository.GetUserLikes(likesParams);
+
+            PaginationHeader paginationHeader = new(users.CurrentPage,
+                users.PageSize,
+                users.TotalCount,
+                users.TotalPages);
+            Response.AddPaginationHeader(paginationHeader);
 
             return Ok(users);
         }
