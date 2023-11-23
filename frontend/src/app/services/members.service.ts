@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Member } from '../models/member';
@@ -7,6 +7,10 @@ import { PaginatedResults } from '../models/pagination';
 import { UserParams } from '../models/user-params';
 import { AccountService } from './account.service';
 import { User } from '../models/user';
+import {
+  getPaginatedResult,
+  getPaginationHeaders,
+} from '../helpers/paginationHelper';
 
 @Injectable({
   providedIn: 'root',
@@ -57,7 +61,7 @@ export class MembersService implements OnDestroy {
     const response = this.memberCache.get(Object.values(userParams).join('-'));
     if (response) return of(response);
 
-    let params = this.getPaginationHeaders(
+    let params = getPaginationHeaders(
       userParams.pageNumber,
       userParams.pageSize
     );
@@ -67,47 +71,16 @@ export class MembersService implements OnDestroy {
     params = params.append('gender', userParams.gender);
     params = params.append('orderBy', userParams.orderBy);
 
-    return this.getPaginatedResult<Member[]>(
+    return getPaginatedResult<Member[]>(
       `${environment.apiUrl}/users`,
-      params
+      params,
+      this.httpClient
     ).pipe(
       map((response) => {
         this.memberCache.set(Object.values(userParams).join('-'), response);
         return response;
       })
     );
-  }
-
-  private getPaginatedResult<T>(
-    url: string,
-    params: HttpParams
-  ): Observable<PaginatedResults<T>> {
-    const paginatedResult: PaginatedResults<T> = new PaginatedResults<T>();
-    // Full HTTP response should be observed, and any query parameters should be included.
-    return this.httpClient
-      .get<PaginatedResults<T>>(url, {
-        observe: 'response',
-        params,
-      })
-      .pipe(
-        map((res) => {
-          if (res.body) {
-            paginatedResult.result = res.body as T;
-          }
-          const pagination = res.headers.get('Pagination');
-          if (pagination) {
-            paginatedResult.pagination = JSON.parse(pagination);
-          }
-          return paginatedResult as PaginatedResults<T>;
-        })
-      );
-  }
-
-  private getPaginationHeaders(pageNumber: number, pageSize: number) {
-    let params = new HttpParams();
-    params = params.append('pageNumber', pageNumber);
-    params = params.append('pageSize', pageSize);
-    return params;
   }
 
   getMemberByName(username: string) {
@@ -134,11 +107,12 @@ export class MembersService implements OnDestroy {
   }
 
   getLikes(predicate: string, pageNumber: number, pageSize: number) {
-    let params = this.getPaginationHeaders(pageNumber, pageSize);
+    let params = getPaginationHeaders(pageNumber, pageSize);
     params = params.append('predicate', predicate);
-    return this.getPaginatedResult<Member[]>(
+    return getPaginatedResult<Member[]>(
       `${environment.apiUrl}/likes`,
-      params
+      params,
+      this.httpClient
     );
   }
 
