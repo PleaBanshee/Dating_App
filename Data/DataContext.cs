@@ -16,6 +16,8 @@ public class DataContext: DbContext
 
     public DbSet<UserLike> Likes { get; set; }
 
+    public DbSet<Message> Messages { get; set; }
+
     // This method is used to configure the database, and is an overridden method from DbContext
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -35,6 +37,15 @@ public class DataContext: DbContext
             .WithMany(l => l.LikedByUsers)
             .HasForeignKey(s => s.LikedUserId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<Message>()
+            .HasOne(u => u.Recipient)
+            .WithMany(m => m.MessagesReceived)
+            .OnDelete(DeleteBehavior.Restrict); // Messages will not be deleted if a user is deleted
+        builder.Entity<Message>()
+            .HasOne(u => u.Sender)
+            .WithMany(m => m.MessagesSent)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }
 

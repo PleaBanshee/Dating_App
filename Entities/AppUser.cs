@@ -42,6 +42,10 @@ namespace Dating_App.Entities
         // This is a many-to-many relationship
         public ICollection<UserLike> LikedUsers { get; set; } = new List<UserLike>();
 
+        public ICollection<Message> MessagesSent { get; set; } = new List<Message>();
+
+        public ICollection<Message> MessagesReceived { get; set; } = new List<Message>();
+
         public int GetAge() => DateOfBirth.CalculateAge();
     }
 }
