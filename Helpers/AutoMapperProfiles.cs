@@ -11,7 +11,8 @@ namespace Dating_App.Helpers
         {
             // Maps PhotoUrl to the Url property of the PhotoDto
             CreateMap<AppUser, MemberDto>()
-                .ForMember(dest => dest.PhotoUrl, opt => opt.MapFrom(src => src.Photos.FirstOrDefault(x => x.IsProfilePic).Url))
+                .ForMember(dest => dest.PhotoUrl,
+                opt => opt.MapFrom(src => src.Photos.FirstOrDefault(x => x.IsProfilePic).Url))
                 // This is a custom mapping
                 .ForMember(dest => dest.Age, opt => opt.MapFrom(src => src.GetAge()));
 
@@ -20,6 +21,12 @@ namespace Dating_App.Helpers
             CreateMap<MemberUpdateDto, AppUser>();
 
             CreateMap<RegisterDto, AppUser>();
+
+            CreateMap<Message, MessageDto>()
+                .ForMember(dest => dest.SenderPhotoUrl,
+                opt => opt.MapFrom(src => src.Sender.Photos.FirstOrDefault(x => x.IsProfilePic).Url))
+                .ForMember(dest => dest.RecipientPhotoUrl,
+                opt => opt.MapFrom(src => src.Recipient.Photos.FirstOrDefault(x => x.IsProfilePic).Url));
         }
     }
 }
