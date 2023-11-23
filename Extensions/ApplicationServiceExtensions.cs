@@ -39,6 +39,9 @@ namespace Dating_App.Extensions
             // Registers Likes Repository
             services.AddScoped<ILikesRepository, LikesRepository>();
 
+            // Registers Message Repository
+            services.AddScoped<IMessageRepository, MessageRepository>();
+
             return services;
         }
     }
