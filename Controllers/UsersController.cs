@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Dating_App.Interfaces;
 using AutoMapper;
 using Dating_App.DTOs;
-using System.Security.Claims;
 using Dating_App.Extensions;
 using Dating_App.Entities;
 using Dating_App.Helpers;
