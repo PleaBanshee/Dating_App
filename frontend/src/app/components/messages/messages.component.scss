@@ -1,0 +1,28 @@
+.table-container {
+  cursor: pointer;
+  table {
+    border-right: 1px solid #dee2e6;
+    border-left: 1px solid #dee2e6;
+    border-radius: 10px;
+    overflow: hidden;
+
+    thead > tr > th {
+      background-color: #75caeb;
+      color: #ffff;
+      text-align: center;
+    }
+
+    .th-messages {
+      width: 40%;
+    }
+
+    .th-headers {
+      width: 20%;
+    }
+
+    .img-circle {
+      max-height: 5rem;
+      border: 3px solid #adb5bd;
+    }
+  }
+}

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Message } from 'src/app/models/message';
 import { Pagination } from 'src/app/models/pagination';
+import { UserParams } from 'src/app/models/user-params';
+import { MembersService } from 'src/app/services/members.service';
 import { MessageService } from 'src/app/services/message.service';
 
 @Component({
@@ -11,24 +13,39 @@ import { MessageService } from 'src/app/services/message.service';
 export class MessagesComponent implements OnInit {
   messages: Message[] | undefined;
   pagination: Pagination | undefined;
-  container: string = 'Inbox';
+  userParams: UserParams | undefined;
+  container: string = 'Unread';
   pageNumber: number = 1;
   pageSize: number = 5;
 
-  constructor(private messageService: MessageService) {}
+  constructor(
+    private messageService: MessageService,
+    private memberService: MembersService
+  ) {
+    this.userParams = this.memberService.getUserParams();
+  }
 
   ngOnInit(): void {
     this.loadMessages();
   }
 
+  // TODO: Fix user params (pagination) for component
   loadMessages() {
-    this.messageService
-      .getMessages(this.pageNumber, this.pageSize, this.container)
-      .subscribe({
-        next: (res) => {
-          this.messages = res.result;
-          this.pagination = res.pagination;
-        },
-      });
+    if (this.userParams) {
+      this.memberService.setUserParams(this.userParams);
+      this.messageService
+        .getMessages(this.pageNumber, this.pageSize, this.container)
+        .subscribe({
+          next: (res) => {
+            this.messages = res.result;
+            this.pagination = res.pagination;
+          },
+        });
+    }
+  }
+
+  resetFilters() {
+    this.userParams = this.memberService.resetUserParams();
+    this.loadMessages();
   }
 }
