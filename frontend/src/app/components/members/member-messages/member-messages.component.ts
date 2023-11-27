@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { TimeagoModule } from 'ngx-timeago';
 import { Message } from 'src/app/models/message';
 import { MessageService } from 'src/app/services/message.service';
 
@@ -8,7 +9,7 @@ import { MessageService } from 'src/app/services/message.service';
   standalone: true,
   templateUrl: './member-messages.component.html',
   styleUrls: ['./member-messages.component.scss'],
-  imports: [CommonModule],
+  imports: [CommonModule, TimeagoModule],
 })
 export class MemberMessagesComponent implements OnChanges {
   @Input() username: string = '';
