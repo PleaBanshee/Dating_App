@@ -55,7 +55,10 @@
         ></gallery>
       </tab>
       <tab heading="Messages">
-        <p>Chat with {{ member.fullName }} here</p>
+        <!-- member-details is a standalone component, so
+        import member-messages into that component's dependencies.
+        member-messages is also a standalone component -->
+        <app-member-messages [username]="member.userName"></app-member-messages>
       </tab>
     </tabset>
   </div>
