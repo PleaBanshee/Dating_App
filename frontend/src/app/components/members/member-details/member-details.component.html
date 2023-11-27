@@ -36,29 +36,39 @@
     </div>
   </div>
   <div class="col-7 tabset-left">
-    <tabset class="member-tabset">
-      <tab heading="About {{ member.fullName }}">
+    <tabset class="member-tabset" #membertabs>
+      <tab
+        heading="About {{ member.fullName }}"
+        (selectTab)="onTabActivated($event)"
+      >
         <h4>Description</h4>
         <p>{{ member.introduction }}</p>
         <h4>Looking for</h4>
         <p>{{ member.lookingFor }}</p>
       </tab>
-      <tab heading="Interests">
+      <tab heading="Interests" (selectTab)="onTabActivated($event)">
         <h4>Interests</h4>
         <p>{{ member.interests }}</p>
       </tab>
-      <tab heading="Photos" #photoTab="tab">
+      <tab
+        heading="Photos"
+        #photoTab="tab"
+        (selectTab)="onTabActivated($event)"
+      >
         <gallery
           *ngIf="photoTab.active"
           class="gallery"
           [items]="images"
         ></gallery>
       </tab>
-      <tab heading="Messages">
+      <tab heading="Messages" (selectTab)="onTabActivated($event)">
         <!-- member-details is a standalone component, so
         import member-messages into that component's dependencies.
         member-messages is also a standalone component -->
-        <app-member-messages [username]="member.userName"></app-member-messages>
+        <app-member-messages
+          [messages]="messages"
+          [userName]="member.userName"
+        ></app-member-messages>
       </tab>
     </tabset>
   </div>
