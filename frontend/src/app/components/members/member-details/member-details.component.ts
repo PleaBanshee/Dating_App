@@ -25,7 +25,11 @@ import { Message } from 'src/app/models/message';
 })
 export class MemberDetailsComponent implements OnInit {
   // For accessing the memberTabs template variable
-  @ViewChild('memberTabs') memberTabs: TabsetComponent | undefined;
+  // Resolve the query at the component's initialization,
+  // rather than waiting until after the view is created.
+  @ViewChild('memberTabs', { static: true }) memberTabs:
+    | TabsetComponent
+    | undefined;
   member: Member | undefined;
   messages: Message[] = [];
   images: GalleryItem[] = [];
@@ -39,6 +43,24 @@ export class MemberDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadMember();
+    // listens for changes in query params, and sets the active tab based on the tab value
+    this.route.queryParams.subscribe({
+      next: (params) => {
+        params['tab'] && this.selectTab(params['tab']);
+      },
+    });
+  }
+
+  selectTab(heading: string) {
+    if (this.memberTabs) {
+      const tabToActivate = this.memberTabs.tabs.find(
+        (x) => x.heading === heading
+      );
+
+      if (tabToActivate) {
+        tabToActivate.active = true;
+      }
+    }
   }
 
   onTabActivated(data: TabDirective) {
