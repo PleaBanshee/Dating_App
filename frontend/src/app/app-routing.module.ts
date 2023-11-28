@@ -11,6 +11,7 @@ import { NotFoundComponent } from './errors/not-found/not-found.component';
 import { ServerErrorComponent } from './errors/server-error/server-error.component';
 import { MemberEditComponent } from './components/members/member-edit/member-edit.component';
 import { navigationGuard } from './guards/navigation.guard';
+import { memberDetailedResolver } from './resolvers/member-detailed.resolver';
 
 const routes: Routes = [
   { path: ``, component: HomeComponent }, // default route: home
@@ -20,7 +21,12 @@ const routes: Routes = [
     canActivate: [authGuard], // canActivate: route protection
     children: [
       { path: `members`, component: MemberListComponent },
-      { path: `members/:username`, component: MemberDetailsComponent },
+      // map resolver to get username from query params
+      {
+        path: `members/:username`,
+        component: MemberDetailsComponent,
+        resolve: { member: memberDetailedResolver },
+      },
       {
         path: `member/edit`,
         component: MemberEditComponent,

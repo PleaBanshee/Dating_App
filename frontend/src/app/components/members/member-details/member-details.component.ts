@@ -5,7 +5,6 @@ import { GalleryItem, GalleryModule, ImageItem } from 'ng-gallery';
 import { TabDirective, TabsModule, TabsetComponent } from 'ngx-bootstrap/tabs';
 import { TimeagoModule } from 'ngx-timeago';
 import { Member } from 'src/app/models/member';
-import { MembersService } from 'src/app/services/members.service';
 import { MemberMessagesComponent } from '../member-messages/member-messages.component';
 import { MessageService } from 'src/app/services/message.service';
 import { Message } from 'src/app/models/message';
@@ -30,25 +29,30 @@ export class MemberDetailsComponent implements OnInit {
   @ViewChild('memberTabs', { static: true }) memberTabs:
     | TabsetComponent
     | undefined;
-  member: Member | undefined;
+  member: Member = {} as Member; // Type assertion from empty object to Member
   messages: Message[] = [];
   images: GalleryItem[] = [];
   activeTab: TabDirective | undefined;
 
   constructor(
-    private memberService: MembersService,
     private messageService: MessageService,
     private route: ActivatedRoute // get route parameters
   ) {}
 
   ngOnInit(): void {
-    this.loadMember();
+    // Fetch member from data from route resolver
+    this.route.data.subscribe({
+      next: (data) => {
+        this.member = data['member'];
+      },
+    });
     // listens for changes in query params, and sets the active tab based on the tab value
     this.route.queryParams.subscribe({
       next: (params) => {
         params['tab'] && this.selectTab(params['tab']);
       },
     });
+    this.getImages();
   }
 
   selectTab(heading: string) {
@@ -78,18 +82,6 @@ export class MemberDetailsComponent implements OnInit {
         },
       });
     }
-  }
-
-  loadMember() {
-    // extracting the 'username' route parameter from current route: /api/users/{username}
-    let username: string | null = this.route.snapshot.paramMap.get('username');
-    if (!username) return;
-    this.memberService.getMemberByName(username).subscribe({
-      next: (member) => {
-        this.member = member;
-        this.getImages();
-      },
-    });
   }
 
   getImages() {
