@@ -28,7 +28,10 @@
       <div class="card-footer w-100">
         <div class="btn-group d-flex justify-content-center align-items-center">
           <button class="btn btn-primary rounded me-1 btn-width">Like</button>
-          <button class="btn btn-success rounded ms-1 btn-width">
+          <button
+            class="btn btn-success rounded ms-1 btn-width"
+            (click)="selectTab('Messages')"
+          >
             Messages
           </button>
         </div>
@@ -36,7 +39,7 @@
     </div>
   </div>
   <div class="col-7 tabset-left">
-    <tabset class="member-tabset" #membertabs>
+    <tabset class="member-tabset" #memberTabs>
       <tab
         heading="About {{ member.fullName }}"
         (selectTab)="onTabActivated($event)"

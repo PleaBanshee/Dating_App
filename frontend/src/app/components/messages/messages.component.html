@@ -42,11 +42,12 @@
       <tr
         class="text-center"
         *ngFor="let message of messages"
-        [routerLink]="
+        routerLink="{{
           container === 'Outbox'
             ? '/members/' + message.recipientUsername
             : '/members/' + message.senderUsername
-        "
+        }}"
+        [queryParams]="{ tab: 'Messages' }"
       >
         <td>{{ message.content }}</td>
         <td>
