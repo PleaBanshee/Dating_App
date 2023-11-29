@@ -32,13 +32,7 @@ namespace Dating_App.Controllers
 
             var user = _mapper.Map<AppUser>(registerDto); // maps the registerDto to an AppUser object
 
-            // using statement ensures that the object is disposed of when it's no longer needed
-            using var hmac = new HMACSHA512();
-
-            // password salt: is used to create a unique password hash for each user
             user.UserName = registerDto.Username.ToLower();
-            user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password));
-            user.PasswordSalt = hmac.Key;
 
             // Add user to the database
             _context.Users.Add(user);
@@ -68,16 +62,6 @@ namespace Dating_App.Controllers
                 .SingleOrDefaultAsync(x => x.UserName == loginDto.Username.ToLower());
 
             if (user == null) return Unauthorized("Invalid username");
-
-            using var hmac = new HMACSHA512(user.PasswordSalt);
-
-            var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDto.Password));
-
-            // Compare the computed hash with the password hash stored in the database
-            if (!computedHash.SequenceEqual(user.PasswordHash))
-            {
-                return Unauthorized("Invalid password");
-            }
 
             return new UserDto
             {

@@ -44,6 +44,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+// using keyword ensures that the object is disposed of when it's no longer needed
 // Provides access to all services in this class
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;
