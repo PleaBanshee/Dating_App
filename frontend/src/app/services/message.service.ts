@@ -28,4 +28,11 @@ export class MessageService {
       `${environment.apiUrl}/messages/thread/${userName}`
     );
   }
+
+  sendMessage(userName: string, content: string) {
+    return this.httpClient.post<Message>(`${environment.apiUrl}/messages`, {
+      recipientUsername: userName,
+      content,
+    });
+  }
 }
