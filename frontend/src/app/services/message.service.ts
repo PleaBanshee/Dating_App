@@ -35,4 +35,8 @@ export class MessageService {
       content,
     });
   }
+
+  deleteMessage(id: number) {
+    return this.httpClient.delete(`${environment.apiUrl}/messages/${id}`);
+  }
 }
