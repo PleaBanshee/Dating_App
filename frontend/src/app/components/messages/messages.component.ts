@@ -17,6 +17,7 @@ export class MessagesComponent implements OnInit {
   container: string = 'Unread';
   pageNumber: number = 1;
   pageSize: number = 5;
+  loading: boolean = false;
 
   constructor(
     private messageService: MessageService,
@@ -31,6 +32,7 @@ export class MessagesComponent implements OnInit {
 
   // TODO: Fix user params (pagination) for component
   loadMessages() {
+    this.loading = true;
     if (this.userParams) {
       this.memberService.setUserParams(this.userParams);
       this.messageService
@@ -39,6 +41,7 @@ export class MessagesComponent implements OnInit {
           next: (res) => {
             this.messages = res.result;
             this.pagination = res.pagination;
+            this.loading = false;
           },
         });
     }

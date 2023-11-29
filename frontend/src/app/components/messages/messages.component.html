@@ -48,6 +48,7 @@
             : '/members/' + message.senderUsername
         }}"
         [queryParams]="{ tab: 'Messages' }"
+        [hidden]="loading"
       >
         <td>{{ message.content }}</td>
         <td>
@@ -79,6 +80,6 @@
     [pagination]="pagination"
     [userParams]="userParams"
     (pageChangedEmitter)="loadMessages()"
-    *ngIf="pagination"
+    *ngIf="!loading && pagination && messages && messages.length > 0"
   ></app-pagination>
 </div>
