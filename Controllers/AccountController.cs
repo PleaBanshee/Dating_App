@@ -1,12 +1,10 @@
 ﻿using AutoMapper;
-using Dating_App.Data;
 using Dating_App.DTOs;
 using Dating_App.Entities;
 using Dating_App.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace Dating_App.Controllers
 {
@@ -14,13 +12,13 @@ namespace Dating_App.Controllers
     [ApiController]
     public class AccountController : BaseApiController
     {
-        private readonly DataContext _context;
+        private readonly UserManager<AppUser> _userManager;
         private readonly IMapper _mapper;
         private readonly ITokenService _tokenService;
 
-        public AccountController(DataContext context, IMapper mapper, ITokenService tokenService)
+        public AccountController(UserManager<AppUser> userManager, IMapper mapper, ITokenService tokenService)
         {
-            _context = context;
+            _userManager = userManager;
             _mapper = mapper;
             _tokenService = tokenService;
         }
@@ -35,8 +33,9 @@ namespace Dating_App.Controllers
             user.UserName = registerDto.Username.ToLower();
 
             // Add user to the database
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+            var result = await _userManager.CreateAsync(user,registerDto.Password);
+
+            if (!result.Succeeded) return BadRequest(result.Errors);
 
             return new UserDto
             {
@@ -51,17 +50,19 @@ namespace Dating_App.Controllers
         private async Task<bool> UserExists(string username)
         {
             // AnyAsync: returns a boolean value if the user exists
-            return await _context.Users.AnyAsync(x => x.UserName == username.ToLower());
+            return await _userManager.Users.AnyAsync(x => x.UserName == username.ToLower());
         }
 
         [HttpPost("login")] // api/account/login?username={username}&password={password}
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
-            var user = await _context.Users
+            var user = await _userManager.Users
                 .Include(p => p.Photos) // link to Photos entity, otherwise the user's photo field will remain empty
                 .SingleOrDefaultAsync(x => x.UserName == loginDto.Username.ToLower());
 
-            if (user == null) return Unauthorized("Invalid username");
+            var result = await _userManager.CheckPasswordAsync(user, loginDto.Password);
+
+            if (user == null || !result) return Unauthorized("Invalid credentials");
 
             return new UserDto
             {
