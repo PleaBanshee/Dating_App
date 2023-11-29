@@ -1,18 +1,11 @@
 ﻿using Dating_App.Extensions;
-using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Identity;
 
 namespace Dating_App.Entities
 {
-    public class AppUser
+    // Inherits from IdentityUser for identity management
+    public class AppUser : IdentityUser<int>
     {
-        public int Id { get; set; }
-
-        public string UserName { get; set; }
-
-        public byte[] PasswordHash { get; set; }
-
-        public byte[] PasswordSalt { get; set; }
-
         public DateOnly DateOfBirth { get; set; }
 
         public string FullName { get; set; }
@@ -45,6 +38,8 @@ namespace Dating_App.Entities
         public ICollection<Message> MessagesSent { get; set; } = new List<Message>();
 
         public ICollection<Message> MessagesReceived { get; set; } = new List<Message>();
+
+        public ICollection<AppUserRole> userRoles { get; set; }
 
         public int GetAge() => DateOfBirth.CalculateAge();
     }
