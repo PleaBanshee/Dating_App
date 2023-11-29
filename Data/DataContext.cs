@@ -1,18 +1,22 @@
 ﻿using Dating_App.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Dating_App.Data;
 
-// Inherits from DbContext
+// Inherits from IdentityDbContext for identity management
+// Specifies identity entities and their PK type
 // Use this class for data that can be queried
-public class DataContext: DbContext
+public class DataContext: IdentityDbContext<AppUser
+    , AppRole, int, IdentityUserClaim<int>
+    , AppUserRole, IdentityUserLogin<int>
+    , IdentityRoleClaim<int>, IdentityUserToken<int>>
 {
     public DataContext(DbContextOptions options) : base(options)
     {
 
     }
-
-    public DbSet<AppUser> Users { get; set; }
 
     public DbSet<UserLike> Likes { get; set; }
 
@@ -22,6 +26,19 @@ public class DataContext: DbContext
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
+        // Many-to-many relationship between users and roles 
+        builder.Entity<AppUser>()
+            .HasMany(role => role.userRoles)
+            .WithOne(usr => usr.User)
+            .HasForeignKey(u => u.UserId)
+            .IsRequired();
+
+        builder.Entity<AppRole>()
+            .HasMany(user => user.userRoles)
+            .WithOne(role => role.Role)
+            .HasForeignKey(u => u.RoleId)
+            .IsRequired();
+
         // This is a many-to-many relationship
         builder.Entity<UserLike>()
             .HasKey(k => new { k.SourceUserId, k.LikedUserId });
