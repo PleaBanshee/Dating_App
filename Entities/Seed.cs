@@ -1,28 +1,27 @@
-﻿using Dating_App.Data;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace Dating_App.Entities
 {
     public class Seed
     {
-        public static async Task SeedUsers(DataContext context)
+        // UserManager class is used to manage users in the persistence store
+        public static async Task SeedUsers(UserManager<AppUser> userManager)
         {
-            if (await context.Users.AnyAsync()) return; // If there are any users in the database, return
+            // If there are any users in the database, don't execute
+            if (await userManager.Users.AnyAsync()) return;
 
             var userData = await File.ReadAllTextAsync("Data/UserSeedData.json");
 
             var users = JsonConvert.DeserializeObject<List<AppUser>>(userData);
 
-            foreach (var user in users) 
-            { 
+            foreach (var user in users)
+            {
                 user.UserName = user.UserName.ToLower();
-                context.Users.Add(user);
+                // Creates and saves to DB
+                await userManager.CreateAsync(user, "Pa$$w0rd");
             }
-
-            await context.SaveChangesAsync();
         }
     }
 }
