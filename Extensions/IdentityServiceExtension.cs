@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Dating_App.Data;
+using Dating_App.Entities;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -9,6 +13,16 @@ namespace Dating_App.Extensions
         public static IServiceCollection AddIdentityServices(this IServiceCollection services, 
             IConfiguration config) 
         {
+            // TODO: set passwords to require alphanumeric characters
+            // TODO: require user to register with email
+            // Configures the Identity service
+            services.AddIdentityCore<AppUser>(opt =>
+            {
+                opt.Password.RequireNonAlphanumeric = false;
+            }).AddRoles<AppRole>()
+            .AddRoleManager<RoleManager<AppRole>>()
+            .AddEntityFrameworkStores<DataContext>();
+
             // Config Service: JWTs
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).
                 AddJwtBearer(options =>
