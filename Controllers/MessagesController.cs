@@ -79,11 +79,11 @@ namespace Dating_App.Controllers
             var username = User.GetUsername();
             var message = await _messageRepository.GetMessage(id);
 
-            if (message.Sender.UserName != username && message.Recipient.UserName != username)
+            if (message.SenderUsername != username && message.RecipientUsername != username)
                 return Unauthorized();
 
-            if (message.Sender.UserName == username) message.SenderDeleted = true;
-            if (message.Recipient.UserName == username) message.RecipientDeleted = true;
+            if (message.SenderUsername == username) message.SenderDeleted = true;
+            if (message.RecipientUsername == username) message.RecipientDeleted = true;
             // Deletes message from DB if both sender and recipient deleted it
             if (message.SenderDeleted && message.RecipientDeleted) _messageRepository.DeleteMessage(message);
 
