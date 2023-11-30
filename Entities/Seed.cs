@@ -38,7 +38,15 @@ namespace Dating_App.Entities
 
             var admin = new AppUser
             {
-                UserName = "admin"
+                UserName = "admin",
+                City = "Washington",
+                Country = "USA",
+                DateOfBirth = DateOnly.FromDateTime(DateTime.UtcNow.AddYears(-35)),
+                FullName = "Andrei Neagoie",
+                Gender = "male",
+                Interests = "Gaming, Programming",
+                Introduction = "Hello, I'm Andrei",
+                LookingFor = "Beefy Russian Women",
             };
 
             await userManager.CreateAsync(admin, "Pa$$w0rd");

@@ -26,6 +26,7 @@ namespace Dating_App.Controllers
             _photoService = photoService;
         }
 
+        [Authorize(Roles = "Admin")] // Only admin can access this method
         [HttpGet] // api/users --- parameter passed comes from query string
         public async Task<ActionResult<PagedList<MemberDto>>> GetMembers([FromQuery]UserParams userParams)
         {
