@@ -1,7 +1,14 @@
 .nav-container {
+  nav {
+    background: #04c8de !important;
+  }
+
   .active {
-    color: #f78a2a !important;
-    border: 2px solid #f78a2a;
+    color: #ffff !important;
+    text-decoration: underline;
+    text-decoration-color: #ffff;
+    text-underline-offset: 0.7rem;
+    font-weight: 1000;
     border-radius: 8px;
   }
 
