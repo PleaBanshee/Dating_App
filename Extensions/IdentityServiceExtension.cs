@@ -36,6 +36,13 @@ namespace Dating_App.Extensions
                     };
                 });
 
+            // Config Service: Authorization policies
+            services.AddAuthorization(opt =>
+            {
+                opt.AddPolicy("RequiredAdminRole", policy => policy.RequireRole("Admin"));
+                opt.AddPolicy("ModeratePhotoRole", policy => policy.RequireRole("Admin", "Moderator"));
+            });
+
             return services;
         }
     }
