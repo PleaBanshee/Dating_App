@@ -53,10 +53,11 @@ try
 {
     var context = services.GetRequiredService<DataContext>();
     var userManager = services.GetRequiredService<UserManager<AppUser>>();
+    var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
     // asynchronously applies migrations to the db
     await context.Database.MigrateAsync();
     // Seeds the db
-    await Seed.SeedUsers(userManager);
+    await Seed.SeedUsers(userManager,roleManager);
 }
 catch (Exception ex)
 {

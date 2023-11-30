@@ -24,11 +24,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EditorConfigFiles Remove="C:\Users\llewellyn\OneDrive\Desktop\COURSES\AngularAndDotNet\Dating_App\.editorconfig" />
+    <EditorConfigFiles Remove=".editorconfig" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="C:\Users\llewellyn\OneDrive\Desktop\COURSES\AngularAndDotNet\Dating_App\.editorconfig" />
+    <None Include=".editorconfig" />
   </ItemGroup>
 
 </Project>
