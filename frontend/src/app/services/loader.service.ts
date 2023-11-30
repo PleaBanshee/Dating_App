@@ -12,9 +12,8 @@ export class LoaderService {
   busyLoading() {
     this.loading = true;
     this.spinnerService.show(undefined, {
-      type: 'ball-clip-rotate',
-      bdColor: 'rgba(215,215,219,1.000)', // background colour
-      color: 'rgba(50,168,52,1.000)',
+      type: 'ball-spin',
+      color: 'rgba(255, 94, 223, 1)',
     });
   }
 

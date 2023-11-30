@@ -12,6 +12,7 @@ import { ServerErrorComponent } from './errors/server-error/server-error.compone
 import { MemberEditComponent } from './components/members/member-edit/member-edit.component';
 import { navigationGuard } from './guards/navigation.guard';
 import { memberDetailedResolver } from './resolvers/member-detailed.resolver';
+import { AdminPanelComponent } from './components/admin/admin-panel/admin-panel.component';
 
 const routes: Routes = [
   { path: ``, component: HomeComponent }, // default route: home
@@ -34,6 +35,7 @@ const routes: Routes = [
       },
       { path: `lists`, component: ListsComponent },
       { path: `messages`, component: MessagesComponent },
+      { path: `admin`, component: AdminPanelComponent },
     ],
   },
   { path: 'errors', component: ErrorComponent },

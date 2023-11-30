@@ -27,6 +27,7 @@ import { FileUploadComponent } from './components/members/file-upload/file-uploa
 import { TextInputComponent } from './components/forms/text-input/text-input.component';
 import { DatePickerComponent } from './components/forms/date-picker/date-picker.component';
 import { PaginationComponent } from './components/pagination/pagination.component';
+import { AdminPanelComponent } from './components/admin/admin-panel/admin-panel.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { PaginationComponent } from './components/pagination/pagination.componen
     TextInputComponent,
     DatePickerComponent,
     PaginationComponent,
+    AdminPanelComponent,
   ],
   imports: [
     BrowserModule,
