@@ -35,6 +35,29 @@ namespace Dating_App.Controllers
             return Ok(users);
         }
 
+        // Should technically be a put request, but we want to return a status with content
+        [Authorize(Policy = "RequiredAdminRole")]
+        [HttpPost("edit-roles/{username}")] // api/admin/edit-roles/{username}?roles={roles}
+        public async Task<ActionResult> EditRoles(string username, [FromQuery] string roles)
+        {
+            if (string.IsNullOrEmpty(roles)) return BadRequest("Please select a role for user");
+
+            var selectedRoles = roles.Split(",").ToArray();
+            var user = await _userManager.FindByNameAsync(username);
+
+            if (user == null) return NotFound("Could not find user");
+            var userRoles = await _userManager.GetRolesAsync(user);
+            // find roles not already present in userRoles
+            var result = await _userManager.AddToRolesAsync(user, selectedRoles.Except(userRoles));
+
+            if (!result.Succeeded) return BadRequest("Failed to add to roles");
+            // remove roles that was not selected to be edited
+            result = await _userManager.RemoveFromRolesAsync(user, userRoles.Except(selectedRoles));
+
+            if (!result.Succeeded) return BadRequest("Failed to remove from roles");
+            return Ok(await _userManager.GetRolesAsync(user));  
+        }
+
         [Authorize(Policy = "ModeratePhotoRole")]
         [HttpGet("photos-to-moderate")] // api/admin/photos-to-moderate
         public ActionResult GetPhotosForModeration() 
