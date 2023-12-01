@@ -13,6 +13,7 @@ import { MemberEditComponent } from './components/members/member-edit/member-edi
 import { navigationGuard } from './guards/navigation.guard';
 import { memberDetailedResolver } from './resolvers/member-detailed.resolver';
 import { AdminPanelComponent } from './components/admin/admin-panel/admin-panel.component';
+import { adminGuard } from './guards/admin.guard';
 
 const routes: Routes = [
   { path: ``, component: HomeComponent }, // default route: home
@@ -35,7 +36,11 @@ const routes: Routes = [
       },
       { path: `lists`, component: ListsComponent },
       { path: `messages`, component: MessagesComponent },
-      { path: `admin`, component: AdminPanelComponent },
+      {
+        path: `admin`,
+        component: AdminPanelComponent,
+        canActivate: [adminGuard],
+      },
     ],
   },
   { path: 'errors', component: ErrorComponent },
