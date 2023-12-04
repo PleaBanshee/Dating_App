@@ -3,6 +3,7 @@ using Dating_App.Data.Repositories;
 using Dating_App.Helpers;
 using Dating_App.Interfaces;
 using Dating_App.Services;
+using Dating_App.SignalR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Dating_App.Extensions
@@ -44,6 +45,9 @@ namespace Dating_App.Extensions
 
             // Registers Presence Hub: Real-Time Chat
             services.AddSignalR();
+
+            // Registers presence tracker: available to whole app
+            services.AddSingleton<PresenceTracker>();
 
             return services;
         }
