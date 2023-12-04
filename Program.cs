@@ -32,7 +32,11 @@ if (app.Environment.IsDevelopment())
 app.UseMiddleware<ExceptionMiddleware>();
 
 // The order in which you add middleware is important!
-app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().WithOrigins(CORS_PORT));
+app.UseCors(builder => builder
+    .AllowAnyHeader()
+    .AllowAnyMethod()
+    .AllowCredentials() // for authentication to SignalR
+    .WithOrigins(CORS_PORT));
 
 // this middleware is used to check if the request has a valid token
 app.UseAuthentication();

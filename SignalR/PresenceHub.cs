@@ -1,8 +1,10 @@
 ﻿using Dating_App.Extensions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 
 namespace Dating_App.SignalR
 {
+    [Authorize]
     // Hub is a class that can be used to send messages to all connected clients
     public class PresenceHub: Hub
     {
