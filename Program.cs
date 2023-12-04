@@ -36,7 +36,7 @@ app.UseCors(builder => builder
     .AllowAnyHeader()
     .AllowAnyMethod()
     .AllowCredentials() // for authentication to SignalR
-    .WithOrigins(CORS_PORT));
+    .WithOrigins(CORS_PORT, "https://localhost:65396"));
 
 // this middleware is used to check if the request has a valid token
 app.UseAuthentication();
