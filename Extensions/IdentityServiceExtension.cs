@@ -34,6 +34,21 @@ namespace Dating_App.Extensions
                         ValidateIssuer = false,
                         ValidateAudience = false
                     };
+                    options.Events = new JwtBearerEvents
+                    {
+                        // Executes when a message is received
+                        OnMessageReceived = context =>
+                        {
+                            // get access token from SignalR
+                            var accessToken = context.Request.Query["access_token"];
+                            var path = context.HttpContext.Request.Path;
+                            if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/hubs"))
+                            {
+                                context.Token = accessToken;
+                            }
+                            return Task.CompletedTask; // event is completed
+                        }
+                    };
                 });
 
             // Config Service: Authorization policies
