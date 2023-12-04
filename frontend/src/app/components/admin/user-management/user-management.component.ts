@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { User } from 'src/app/models/user';
 import { AdminService } from 'src/app/services/admin.service';
 import { RolesModalComponent } from '../../modals/roles-modal/roles-modal.component';
@@ -14,11 +14,16 @@ export class UserManagementComponent implements OnInit {
   // Initializes modal ref of the roles modal component
   bsModalRef: BsModalRef<RolesModalComponent> =
     new BsModalRef<RolesModalComponent>();
+  availableRoles = ['Admin', 'Moderator', 'Member'];
 
   constructor(
     private adminService: AdminService,
     private modalService: BsModalService
   ) {}
+
+  private arrayIsEqual(arr1: any[], arr2: any[]): boolean {
+    return JSON.stringify(arr1.sort()) === JSON.stringify(arr2.sort());
+  }
 
   ngOnInit(): void {
     this.getUsersWithRoles();
@@ -32,23 +37,30 @@ export class UserManagementComponent implements OnInit {
     });
   }
 
-  fetchRoles(username: string): string[] {
-    const arrRoles: string[] = [];
-    this.users
-      .filter((user) => user.username === username)
-      .forEach((user) => {
-        user.roles.map((role) => arrRoles.push(role.name));
-      });
-    return arrRoles;
-  }
-
-  openRolesModal() {
-    const initialState: ModalOptions = {
+  openRolesModal(user: User) {
+    // data passed down to the modal
+    const config = {
+      class: 'modal-dialog-centered',
       initialState: {
-        list: ['Do thing', 'Someting Else', 'La la la'],
-        title: 'Test Modal',
+        username: user.username,
+        availableRoles: this.availableRoles,
+        selectedRoles: [...user.roles], // creates shallow copy of roles array
       },
     };
-    this.bsModalRef = this.modalService.show(RolesModalComponent, initialState);
+    this.bsModalRef = this.modalService.show(RolesModalComponent, config);
+    this.bsModalRef.onHide?.subscribe({
+      next: () => {
+        const selectedRoles = this.bsModalRef.content?.selectedRoles;
+        if (!this.arrayIsEqual(selectedRoles!, user.roles)) {
+          this.adminService
+            .updateUserRole(user.username, selectedRoles!)
+            .subscribe({
+              next: (roles) => {
+                user.roles = roles;
+              },
+            });
+        }
+      },
+    });
   }
 }
