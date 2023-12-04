@@ -42,6 +42,9 @@ namespace Dating_App.Extensions
             // Registers Message Repository
             services.AddScoped<IMessageRepository, MessageRepository>();
 
+            // Registers Presence Hub: Real-Time Chat
+            services.AddSignalR();
+
             return services;
         }
     }

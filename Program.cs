@@ -2,6 +2,7 @@ using Dating_App.Data;
 using Dating_App.Entities;
 using Dating_App.Extensions;
 using Dating_App.Middleware;
+using Dating_App.SignalR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -44,6 +45,8 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+// Maps requests to the hub
+app.MapHub<PresenceHub>("hubs/presence");
 
 // using keyword ensures that the object is disposed of when it's no longer needed
 // Provides access to all services in this class
