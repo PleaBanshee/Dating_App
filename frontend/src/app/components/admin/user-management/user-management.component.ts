@@ -1,0 +1,36 @@
+import { Component, OnInit } from '@angular/core';
+import { User } from 'src/app/models/user';
+import { AdminService } from 'src/app/services/admin.service';
+
+@Component({
+  selector: 'app-user-management',
+  templateUrl: './user-management.component.html',
+  styleUrls: ['./user-management.component.scss'],
+})
+export class UserManagementComponent implements OnInit {
+  users: User[] = [];
+
+  constructor(private adminService: AdminService) {}
+
+  ngOnInit(): void {
+    this.getUsersWithRoles();
+  }
+
+  getUsersWithRoles() {
+    this.adminService.getUsersWithRoles().subscribe({
+      next: (users) => {
+        this.users = users;
+      },
+    });
+  }
+
+  fetchRoles(username: string): string[] {
+    const arrRoles: string[] = [];
+    this.users
+      .filter((user) => user.username === username)
+      .forEach((user) => {
+        user.roles.map((role) => arrRoles.push(role.name));
+      });
+    return arrRoles;
+  }
+}
