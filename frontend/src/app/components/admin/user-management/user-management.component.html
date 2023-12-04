@@ -12,7 +12,9 @@
         <td>{{ user.username }}</td>
         <td>{{ fetchRoles(user.username) }}</td>
         <td>
-          <button class="btn btn-info">Edit Roles</button>
+          <button class="btn btn-info" (click)="openRolesModal()">
+            Edit Roles
+          </button>
         </td>
       </tr>
     </tbody>
