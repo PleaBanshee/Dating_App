@@ -36,4 +36,23 @@
       opacity: 1;
     }
   }
+
+  // blinking animation
+  @keyframes fa-blink {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0.4;
+    }
+  }
+
+  .is-online {
+    animation: fa-blink 1.5s linear infinite;
+    color: rgb(1, 189, 4);
+  }
+
+  .is-offline {
+    color: rgb(220, 53, 69);
+  }
 }
