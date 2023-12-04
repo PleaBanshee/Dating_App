@@ -17,7 +17,7 @@
         class="form-check-input"
         [checked]="selectedRoles.includes(role)"
         value="role"
-        (change)="(updateChecked)"
+        (change)="updateChecked(role)"
         [disabled]="role === 'Admin' && username === 'admin'"
       />
       <label>{{ role }}</label>
@@ -25,7 +25,7 @@
   </form>
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-default" (click)="bsModalRef.hide()">
+  <button type="button" class="btn btn-primary" (click)="bsModalRef.hide()">
     Submit
   </button>
 </div>
