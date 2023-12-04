@@ -8,6 +8,7 @@ import { Member } from 'src/app/models/member';
 import { MemberMessagesComponent } from '../member-messages/member-messages.component';
 import { MessageService } from 'src/app/services/message.service';
 import { Message } from 'src/app/models/message';
+import { PresenceService } from 'src/app/services/presence.service';
 
 @Component({
   selector: 'app-member-details',
@@ -36,7 +37,8 @@ export class MemberDetailsComponent implements OnInit {
 
   constructor(
     private messageService: MessageService,
-    private route: ActivatedRoute // get route parameters
+    private route: ActivatedRoute, // get route parameters
+    public presenceService: PresenceService
   ) {}
 
   ngOnInit(): void {
