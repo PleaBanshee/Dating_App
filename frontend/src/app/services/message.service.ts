@@ -6,12 +6,41 @@ import {
 } from '../helpers/paginationHelper';
 import { Message } from '../models/message';
 import { environment } from 'src/environments/environment';
+import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
+import { User } from '../models/user';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MessageService {
+  private hubConnection: HubConnection | undefined;
+  private messageThreadSource = new BehaviorSubject<Message[]>([]);
+  messageThread$ = this.messageThreadSource.asObservable();
+
   constructor(private httpClient: HttpClient) {}
+
+  createHubConnection(user: User, otherUserName: string) {
+    this.hubConnection = new HubConnectionBuilder()
+      .withUrl(`${environment.hubUrl}/message?user=${otherUserName}`, {
+        accessTokenFactory: () => user.token,
+      })
+      .withAutomaticReconnect()
+      .build();
+
+    this.hubConnection.start().catch((error) => {
+      console.log(error);
+    });
+
+    // Sends message live to other clients
+    this.hubConnection.on('ReceiveMessageThread', (messages) => {
+      this.messageThreadSource.next(messages);
+    });
+  }
+
+  stopHubConnection() {
+    this.hubConnection?.stop();
+  }
 
   getMessages(pageNumber: number, pageSize: number, container: string) {
     let params = getPaginationHeaders(pageNumber, pageSize);

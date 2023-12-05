@@ -5,11 +5,13 @@ using Dating_App.Entities;
 using Dating_App.Extensions;
 using Dating_App.Helpers;
 using Dating_App.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 
 namespace Dating_App.SignalR
 {
     // Class that can be used to send messages to all connected clients
+    [Authorize]
     public class MessageHub : Hub
     {
         private readonly IMessageRepository _messageRepository;
