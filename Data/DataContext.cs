@@ -22,6 +22,10 @@ public class DataContext: IdentityDbContext<AppUser
 
     public DbSet<Message> Messages { get; set; }
 
+    public DbSet<Group> Groups { get; set; }
+
+    public DbSet<Connection> Connections { get; set; }
+
     // This method is used to configure the database, and is an overridden method from DbContext
     protected override void OnModelCreating(ModelBuilder builder)
     {
