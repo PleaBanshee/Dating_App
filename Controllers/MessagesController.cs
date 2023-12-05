@@ -33,7 +33,7 @@ namespace Dating_App.Controllers
             var sender = await _userRepository.GetUserByUsernameAsync(username);
             var recipient = await _userRepository.GetUserByUsernameAsync(createMessageDto.RecipientUsername);
 
-            if (sender == null) return NotFound();
+            if (recipient == null) return NotFound();
 
             var message = new Message
             {
