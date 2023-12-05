@@ -8,7 +8,7 @@ import { Message } from '../models/message';
 import { environment } from 'src/environments/environment';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import { User } from '../models/user';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, take } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -32,9 +32,19 @@ export class MessageService {
       console.log(error);
     });
 
-    // Sends message live to other clients
+    // Gets messages live to other clients
     this.hubConnection.on('ReceiveMessageThread', (messages) => {
       this.messageThreadSource.next(messages);
+    });
+
+    // Receive live messages
+    this.hubConnection.on('NewMessage', (message) => {
+      this.messageThread$.pipe(take(1)).subscribe({
+        next: (messages) => {
+          // cloning of messages
+          this.messageThreadSource.next([...messages, message]);
+        },
+      });
     });
   }
 
@@ -58,11 +68,15 @@ export class MessageService {
     );
   }
 
-  sendMessage(userName: string, content: string) {
-    return this.httpClient.post<Message>(`${environment.apiUrl}/messages`, {
-      recipientUsername: userName,
-      content,
-    });
+  // async method ensures the promise is returned
+  async sendMessage(userName: string, content: string) {
+    // Sends a message using the Hub and returns a promise
+    return this.hubConnection
+      ?.invoke('SendMessage', {
+        recipientUsername: userName,
+        content,
+      })
+      .catch((error) => console.log(error));
   }
 
   deleteMessage(id: number) {

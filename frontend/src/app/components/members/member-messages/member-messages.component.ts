@@ -23,10 +23,8 @@ export class MemberMessagesComponent {
     if (!this.userName) return;
     this.messageService
       .sendMessage(this.userName, this.messageContent)
-      .subscribe({
-        next: (message) => {
-          // this.messageForm?.reset(); // clears values on form
-        },
+      .then(() => {
+        this.messageForm?.reset(); // clears values on form
       });
   }
 }
