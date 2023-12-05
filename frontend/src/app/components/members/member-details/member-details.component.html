@@ -76,10 +76,7 @@
         <!-- member-details is a standalone component, so
         import member-messages into that component's dependencies.
         member-messages is also a standalone component -->
-        <app-member-messages
-          [messages]="messages"
-          [userName]="member.userName"
-        ></app-member-messages>
+        <app-member-messages [userName]="member.userName"></app-member-messages>
       </tab>
     </tabset>
   </div>
