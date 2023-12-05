@@ -49,8 +49,9 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-// Maps requests to the hub
+// Maps requests to the hubs
 app.MapHub<PresenceHub>("hubs/presence");
+app.MapHub<MessageHub>("hubs/message");
 
 // using keyword ensures that the object is disposed of when it's no longer needed
 // Provides access to all services in this class
