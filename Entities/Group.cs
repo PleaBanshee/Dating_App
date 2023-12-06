@@ -13,6 +13,7 @@ namespace Dating_App.Entities
         public Group(string name)
         {
             Name = name;
+            Connections = new List<Connection>();
         }
 
         [Key]
