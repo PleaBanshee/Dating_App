@@ -89,6 +89,7 @@ import { CustomRouteReuseStrategy } from './services/customRouteReuseStrategy';
       multi: true,
     },
     {
+      // Custom Route ReUsability
       provide: RouteReuseStrategy,
       useClass: CustomRouteReuseStrategy,
     },
