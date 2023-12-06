@@ -43,12 +43,25 @@
         public Task<string[]> GetOnlineUsers() 
         {
             string[] onlineUsers;
+
             lock(OnlineUsers) 
             {
                 onlineUsers = OnlineUsers.OrderBy(k => k.Key).Select(k => k.Key).ToArray();
             }
 
             return Task.FromResult(onlineUsers);
+        }
+
+        public static Task<List<string>> GetConnectionsForUser(string username)
+        {
+            var connectionIds = new List<string>();
+
+            lock(OnlineUsers)
+            {
+                connectionIds = OnlineUsers.GetValueOrDefault(username);
+            }
+
+            return Task.FromResult(connectionIds);
         }
     }
 }
