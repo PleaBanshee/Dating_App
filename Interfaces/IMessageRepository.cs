@@ -20,6 +20,8 @@ namespace Dating_App.Interfaces
 
         void AddGroup(Group group);
 
+        Task<Group> GetGroupById(string connectionId);
+
         void RemoveConnection(Connection connection);
 
         Task<Connection> GetConnection(string connectionId);
