@@ -6,6 +6,7 @@ using Dating_App.SignalR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
+// TODO: store SignalR data using Redis
 var builder = WebApplication.CreateBuilder(args);
 var CORS_PORT = "https://localhost:4200";
 

@@ -3,7 +3,8 @@ import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import { ToastrService } from 'ngx-toastr';
 import { User } from '../models/user';
 import { environment } from 'src/environments/environment';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, take } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +16,7 @@ export class PresenceService {
   // Observable containing dictionary, subscribes to changes
   onlineUsers$ = this.onlineUsersSource.asObservable();
 
-  constructor(private toaster: ToastrService) {}
+  constructor(private toaster: ToastrService, private router: Router) {}
 
   createHubConnection(user: User) {
     this.hubConnection = new HubConnectionBuilder()
@@ -35,6 +36,18 @@ export class PresenceService {
 
     this.hubConnection.on('GetOnlineUsers', (usernames) => {
       this.onlineUsersSource.next(usernames);
+    });
+
+    // Receive live message notifications. User navigates to messages tab when clicking on the toaster button
+    this.hubConnection.on('NotificationsNew', ({ username, fullName }) => {
+      this.toaster
+        .info(`${fullName} has sent you a new message`, 'NOTIFICATION')
+        .onTap.pipe(take(1))
+        .subscribe({
+          next: () => {
+            this.router.navigateByUrl(`/members/${username}/?tab=Messages`);
+          },
+        });
     });
 
     this.hubConnection.on('UserIsOffline', (username) => {
