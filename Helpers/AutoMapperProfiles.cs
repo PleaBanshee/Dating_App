@@ -27,6 +27,12 @@ namespace Dating_App.Helpers
                 opt => opt.MapFrom(src => src.Sender.Photos.FirstOrDefault(x => x.IsProfilePic).Url))
                 .ForMember(dest => dest.RecipientPhotoUrl,
                 opt => opt.MapFrom(src => src.Recipient.Photos.FirstOrDefault(x => x.IsProfilePic).Url));
+
+            // Mapes DateTimes to universal times
+            CreateMap<DateTime, DateTime>().ConvertUsing(d => DateTime.SpecifyKind(d, DateTimeKind.Utc));
+
+            // Maps optional datetimes to universal times
+            CreateMap<DateTime?, DateTime?>().ConvertUsing(d => d.HasValue ? DateTime.SpecifyKind(d.Value, DateTimeKind.Utc) : null);
         }
     }
 }
