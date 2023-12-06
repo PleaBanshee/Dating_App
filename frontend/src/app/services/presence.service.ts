@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment';
 import { BehaviorSubject, take } from 'rxjs';
 import { Router } from '@angular/router';
 
+// TODO: create notification icon on navbar
 @Injectable({
   providedIn: 'root',
 })

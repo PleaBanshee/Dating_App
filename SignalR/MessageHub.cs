@@ -36,19 +36,19 @@ namespace Dating_App.SignalR
             var groupName = GetGroupName(Context.User.GetUsername(), otherUser);
 
             await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
-            await AddToGroup(groupName);
+            var group = await AddToGroup(groupName);
+            await Clients.Group(groupName).SendAsync("UpdatedGroup", group);
 
             var messages = await _messageRepository.GetMessageThread(Context.User.GetUsername(), otherUser);
-            await Clients.Group(groupName).SendAsync("ReceiveMessageThread", messages);
-
-            // Sends message to all connected clients in the Hub that user is online
-            await Clients.Others.SendAsync("UserIsOnline", Context.User.GetUsername());
+            await Clients.Caller.SendAsync("ReceiveMessageThread", messages);
         }
 
         public override async Task OnDisconnectedAsync(Exception exception)
         {
             // Removes connection from group
-            await RemoveFromMessageGroup();
+            var group = await RemoveFromMessageGroup();
+
+            await Clients.Group(group.Name).SendAsync("UpdatedGroup", group);
             await base.OnDisconnectedAsync(exception);
         }
 
@@ -113,7 +113,7 @@ namespace Dating_App.SignalR
             return stringCompare ? $"{caller}-{other}" : $"{other}-{caller}";
         }
 
-        private async Task<bool> AddToGroup(string groupName)
+        private async Task<Group> AddToGroup(string groupName)
         {
             var group = await _messageRepository.GetMessageGroup(groupName);
             var connection = new Connection(Context.ConnectionId, Context.User.GetUsername());
@@ -126,15 +126,31 @@ namespace Dating_App.SignalR
 
             group.Connections.Add(connection);
 
-            return await _messageRepository.SaveAllAsync();
+            if (await _messageRepository.SaveAllAsync())
+            {
+                return group;
+            }
+            else
+            {
+                throw new HubException("Failed to join message group");
+            }
         }
 
-        private async Task RemoveFromMessageGroup()
+        private async Task<Group> RemoveFromMessageGroup()
         {
-            var connection = await _messageRepository.GetConnection(Context.ConnectionId);
+            var group = await _messageRepository.GetGroupById(Context.ConnectionId);
+            var connection = group.Connections.FirstOrDefault(x => x.ConnectionId == Context.ConnectionId);
+
             _messageRepository.RemoveConnection(connection);
 
-            await _messageRepository.SaveAllAsync();
+            if (await _messageRepository.SaveAllAsync())
+            {
+                return group;
+            }
+            else 
+            {
+                throw new HubException("Failed to terminate connection to message group");
+            }
         }
     }
 }
