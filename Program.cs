@@ -64,6 +64,8 @@ try
     var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
     // asynchronously applies migrations to the db
     await context.Database.MigrateAsync();
+    // Clears data from connections
+    await context.Database.ExecuteSqlRawAsync("DELETE FROM [Connections]");
     // Seeds the db
     await Seed.SeedUsers(userManager,roleManager);
 }
