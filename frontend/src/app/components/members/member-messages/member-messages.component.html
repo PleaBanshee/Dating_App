@@ -1,12 +1,15 @@
-<!-- TODO: make messages tab scrollable -->
 <div class="card">
   <div class="card-body">
     <div *ngIf="(messageService.messageThread$ | async)?.length === 0">
       No messages yet... Say hi using the message box
     </div>
+    <!-- scrollTop property of the element is set to the
+    scrollHeight property of the referenced scroller element. -->
     <ul
+      #scroller
       *ngIf="(messageService.messageThread$ | async)!.length > 0"
       class="chat"
+      [scrollTop]="scroller.scrollHeight"
     >
       <li *ngFor="let message of messageService.messageThread$ | async">
         <div class="border-chat">

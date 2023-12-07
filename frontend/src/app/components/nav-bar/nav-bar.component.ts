@@ -26,6 +26,7 @@ export class NavBarComponent {
         console.log(`User: ${res}`);
         this.router.navigateByUrl('/members');
         this.toaster.success('Logged in successfully', 'SUCCESS');
+        this.user = {}; // empties data for username and password fields
       },
     });
   }
@@ -34,7 +35,5 @@ export class NavBarComponent {
     this.memberService.resetUserParams();
     this.accountService.logout();
     this.router.navigateByUrl('/');
-    this.user.username = '';
-    this.user.password = '';
   }
 }
