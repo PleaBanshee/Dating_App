@@ -1,10 +1,8 @@
 ﻿using Dating_App.Data;
-using Dating_App.Data.Repositories;
 using Dating_App.Helpers;
 using Dating_App.Interfaces;
 using Dating_App.Services;
 using Dating_App.SignalR;
-using Microsoft.EntityFrameworkCore;
 
 namespace Dating_App.Extensions
 {
@@ -14,16 +12,9 @@ namespace Dating_App.Extensions
             IConfiguration config) 
         {
             services.AddCors(); // Cross-Origin Resource Sharing
-            // use SQLite as the database provider, and it's specifying the connection
-            // details using a connection string from the application's configuration.
-            services.AddDbContext<DataContext>(options =>
-                options.UseSqlite(config.GetConnectionString("DefaultConnection")));
 
             // Token Service: JWTs
             services.AddScoped<ITokenService, TokenService>();
-
-            // Registers the User Repository as an injectable service 
-            services.AddScoped<IUserRepository, UserRepository>();
 
             // Registers AutoMapper, scans the assembly for mappings and profiles
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -37,17 +28,14 @@ namespace Dating_App.Extensions
             // Registers logging user activity service
             services.AddScoped<LogUserActivity>();
 
-            // Registers Likes Repository
-            services.AddScoped<ILikesRepository, LikesRepository>();
-
-            // Registers Message Repository
-            services.AddScoped<IMessageRepository, MessageRepository>();
-
             // Registers Presence Hub: Real-Time Chat
             services.AddSignalR();
 
             // Registers presence tracker: available to whole app
             services.AddSingleton<PresenceTracker>();
+
+            // Registers Unit of Work
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             return services;
         }
