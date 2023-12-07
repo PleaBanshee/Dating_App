@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 // TODO: store SignalR data using Redis
+// TODO: optimize LINQ quering in app
 var builder = WebApplication.CreateBuilder(args);
 var CORS_PORT = "https://localhost:4200";
 
