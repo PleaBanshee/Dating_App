@@ -16,13 +16,13 @@ namespace Dating_App.Helpers
 
             var userId = resultContext.HttpContext.User.GetUserId();
 
-            var repo = resultContext.HttpContext.RequestServices.GetService<IUserRepository>();
+            var unitOfWork = resultContext.HttpContext.RequestServices.GetService<IUnitOfWork>();
 
-            var user = await repo.GetUserByIdAsync(userId);
+            var user = await unitOfWork.UserRepository.GetUserByIdAsync(userId);
 
             user.LastActive = DateTime.UtcNow;
 
-            await repo.SaveAllAsync();
+            await unitOfWork.Complete();
         }
     }
 }
