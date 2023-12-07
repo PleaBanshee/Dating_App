@@ -71,7 +71,9 @@ namespace Dating_App.Data.Repositories
 
         public async Task<AppUser> GetUserByUsernameAsync(string username)
         {
-            var user = await _context.Users.Include(p => p.Photos).FirstOrDefaultAsync(u => u.UserName == username);
+            var user = await _context.Users
+                .Include(p => p.Photos)
+                .FirstOrDefaultAsync(u => u.UserName == username);
 
             return user;
         }
@@ -87,6 +89,14 @@ namespace Dating_App.Data.Repositories
         public void Update(AppUser user)
         {
             _context.Entry(user).State = EntityState.Modified;
+        }
+
+        public async Task<string> GetUserGender(string username)
+        {
+            return await _context.Users
+                .Where(x => x.UserName == username)
+                .Select(x => x.Gender)
+                .FirstOrDefaultAsync();
         }
     }
 }

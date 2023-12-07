@@ -30,13 +30,13 @@ namespace Dating_App.Controllers
         [HttpGet] // api/users --- parameter passed comes from query string
         public async Task<ActionResult<PagedList<MemberDto>>> GetMembers([FromQuery]UserParams userParams)
         {
-            var currentUser = await _unitOfWork.UserRepository.GetUserByUsernameAsync(User.GetUsername());
-            userParams.CurrentUsername = currentUser.UserName;
+            var gender = await _unitOfWork.UserRepository.GetUserGender(User.GetUsername());
+            userParams.CurrentUsername = User.GetUsername();
 
             if (string.IsNullOrEmpty(userParams.Gender))
             {
                 // member can view opposite gender
-                userParams.Gender = currentUser.Gender == "male" ? "female" : "male";
+                userParams.Gender = gender == "male" ? "female" : "male";
             }
 
             var users = await _unitOfWork.UserRepository.GetMembersAsync(userParams);

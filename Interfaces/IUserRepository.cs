@@ -20,5 +20,7 @@ namespace Dating_App.Interfaces
         Task<MemberDto> GetMemberByUsernameAsync(string username);
 
         Task<MemberDto> GetMemberByIdAsync(int id);
+
+        Task<string> GetUserGender(string username);
     }
 }
