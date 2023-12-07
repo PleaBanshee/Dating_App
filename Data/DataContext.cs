@@ -7,7 +7,8 @@ namespace Dating_App.Data;
 
 // Inherits from IdentityDbContext for identity management
 // Specifies identity entities and their PK type
-// Use this class for data that can be queried
+// Use this class for data that can be queried. Abstraction of database
+// This class is a combination of unit of work and repository pattern
 public class DataContext: IdentityDbContext<AppUser
     , AppRole, int, IdentityUserClaim<int>
     , AppUserRole, IdentityUserLogin<int>

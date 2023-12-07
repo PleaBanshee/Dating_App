@@ -84,12 +84,6 @@ namespace Dating_App.Data.Repositories
             return users;
         }
 
-        public async Task<bool> SaveAllAsync()
-        {
-            // Saves changes to DB if there are any changes
-            return await _context.SaveChangesAsync() > 0;
-        }
-
         public void Update(AppUser user)
         {
             _context.Entry(user).State = EntityState.Modified;
