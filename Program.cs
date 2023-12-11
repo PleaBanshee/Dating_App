@@ -5,11 +5,13 @@ using Dating_App.Middleware;
 using Dating_App.SignalR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using static System.Net.WebRequestMethods;
 
 // TODO: store SignalR data using Redis
 // TODO: optimize LINQ quering in app
 var builder = WebApplication.CreateBuilder(args);
-var CORS_PORT = "https://localhost:4200";
+string[] CORS_Origins = {"https://localhost:4200",
+    "https://localhost:65396","https://localhost:5000", "https://localhost:5001"};
 
 // Add services to the container. Check ApplicationServicesExtensions
 builder.Services.AddApplicationServices(builder.Configuration);
@@ -38,7 +40,7 @@ app.UseCors(builder => builder
     .AllowAnyHeader()
     .AllowAnyMethod()
     .AllowCredentials() // for authentication to SignalR
-    .WithOrigins(CORS_PORT, "https://localhost:65396"));
+    .WithOrigins(CORS_Origins));
 
 // this middleware is used to check if the request has a valid token
 app.UseAuthentication();
@@ -48,7 +50,8 @@ app.UseAuthorization();
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
+app.UseDefaultFiles();
+app.UseStaticFiles(); // for static file serving
 
 app.MapControllers();
 // Maps requests to the hubs
