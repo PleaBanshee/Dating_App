@@ -14,10 +14,10 @@ namespace Dating_App.Extensions
         {
             services.AddCors(); // Cross-Origin Resource Sharing
 
-            // use SQLite as the database provider, and it's specifying the connection
+            // use Postgres as the database provider, and it's specifying the connection
             // details using a connection string from the application's configuration.
             services.AddDbContext<DataContext>(options =>
-                options.UseSqlite(config.GetConnectionString("DefaultConnection")));
+                options.UseNpgsql(config.GetConnectionString("DefaultConnection")));
 
             // Token Service: JWTs
             services.AddScoped<ITokenService, TokenService>();
