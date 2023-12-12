@@ -478,3 +478,4 @@ $RECYCLE.BIN/
 appsettings.json
 frontend/ssl/localhost.pem
 frontend/ssl/localhost-key.pem
+.env

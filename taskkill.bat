@@ -1,2 +1,2 @@
 @echo off
-taskkill /F /IM VMMEM.exe
+wsl --shutdown
