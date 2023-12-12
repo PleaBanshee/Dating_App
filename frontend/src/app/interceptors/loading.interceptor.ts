@@ -23,7 +23,7 @@ export class LoadingInterceptor implements HttpInterceptor {
     // tap() allows you to perform side effects and manage observable
     // streams without altering the emitted data
     return next.handle(request).pipe(
-      !environment.production ? delay(1000) : tap(),
+      !environment.production ? delay(500) : tap(),
       finalize(() => {
         this.loaderService.idle();
       })

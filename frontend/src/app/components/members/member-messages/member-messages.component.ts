@@ -23,15 +23,20 @@ export class MemberMessagesComponent {
   @ViewChild('messageForm') messageForm: NgForm | undefined;
   @Input() userName: string = '';
   messageContent: string = '';
+  loading: boolean = false;
 
   constructor(public messageService: MessageService) {}
 
   sendMessage() {
     if (!this.userName) return;
+    this.loading = true;
     this.messageService
       .sendMessage(this.userName, this.messageContent)
       .then(() => {
         this.messageForm?.reset(); // clears values on form
+      })
+      .finally(() => {
+        this.loading = false;
       });
   }
 }
