@@ -3,11 +3,11 @@ name: docker-push
 on:
   # schedule runs
   workflow_dispatch:
-
-  # push:
-  #   branches:
-  #     - "main"
-
+  push:
+    branches:
+      - "main"
+env:
+  FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }} # Github action secret
 jobs:
   docker:
     runs-on: ubuntu-latest
@@ -26,3 +26,11 @@ jobs:
           context: "{{ defaultContext }}" # root directory
           push: true
           tags: pleabanshee/dating_app:latest
+  deploy:
+    needs: docker # only run this job when the docker job is finished
+    name: Deploy app
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - run: flyctl deploy --remote-only
