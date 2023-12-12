@@ -23,6 +23,6 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
-          context: "{{ defaultContext }}"
+          context: "{{ defaultContext }}" # root directory
           push: true
           tags: pleabanshee/dating_app:latest
