@@ -9,6 +9,13 @@ primary_region = "jnb"
 [build]
   image = "pleabanshee/dating_app:latest"
 
+# Read secrets from here instead of appsettings.json
+# Docker container doesn't need to run over SSL 
+[env]
+  ASPNETCORE_URLS="http://+:8080"
+  CloudinarySettings__CloudName="postalot-images"
+  CloudinarySettings__ApiKey="222977221622446"
+
 [http_service]
   internal_port = 8080
   force_https = true

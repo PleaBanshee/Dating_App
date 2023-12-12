@@ -2,6 +2,8 @@
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build-env
 # Working directory
 WORKDIR /app
+# Expose port 8080 to FlyIO
+EXPOSE 8080
 
 # copy csproj and restore as distinct layers
 COPY *.csproj ./
