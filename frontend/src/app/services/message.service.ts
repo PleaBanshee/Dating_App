@@ -10,6 +10,7 @@ import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import { User } from '../models/user';
 import { BehaviorSubject, take } from 'rxjs';
 import { Group } from '../models/group';
+import { LoaderService } from './loader.service';
 
 @Injectable({
   providedIn: 'root',
@@ -19,9 +20,14 @@ export class MessageService {
   private messageThreadSource = new BehaviorSubject<Message[]>([]);
   messageThread$ = this.messageThreadSource.asObservable();
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(
+    private httpClient: HttpClient,
+    private loadingService: LoaderService
+  ) {}
 
   createHubConnection(user: User, otherUserName: string) {
+    this.loadingService.busyLoading();
+
     this.hubConnection = new HubConnectionBuilder()
       .withUrl(`${environment.hubUrl}/message?user=${otherUserName}`, {
         accessTokenFactory: () => user.token,
@@ -29,9 +35,14 @@ export class MessageService {
       .withAutomaticReconnect()
       .build();
 
-    this.hubConnection.start().catch((error) => {
-      console.log(error);
-    });
+    this.hubConnection
+      .start()
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => {
+        this.loadingService.idle();
+      });
 
     // Gets messages live to other clients
     this.hubConnection.on('ReceiveMessageThread', (messages) => {
@@ -66,7 +77,10 @@ export class MessageService {
   }
 
   stopHubConnection() {
-    if (this.hubConnection) this.hubConnection.stop();
+    if (this.hubConnection) {
+      this.messageThreadSource.next([]); // clears messages
+      this.hubConnection.stop();
+    }
   }
 
   getMessages(pageNumber: number, pageSize: number, container: string) {
