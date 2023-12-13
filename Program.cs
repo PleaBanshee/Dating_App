@@ -32,19 +32,45 @@ else
     // Use connection string provided at runtime by FlyIO.
     var connUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
 
-    // Parse connection URL to connection string for Npgsql
-    connUrl = connUrl.Replace("postgres://", string.Empty);
-    var pgUserPass = connUrl.Split("@")[0];
-    var pgHostPortDb = connUrl.Split("@")[1];
-    var pgHostPort = pgHostPortDb.Split("/")[0];
-    var pgDb = pgHostPortDb.Split("/")[1];
-    var pgUser = pgUserPass.Split(":")[0];
-    var pgPass = pgUserPass.Split(":")[1];
-    var pgHost = pgHostPort.Split(":")[0];
-    var pgPort = pgHostPort.Split(":")[1];
-    var updatedHost = pgHost.Replace("flycast", "internal");
+    if (connUrl.Contains("kitk"))
+    {
+        // Modified connection string for Render hosting
+        connUrl = connUrl.Replace("postgres://", string.Empty);
 
-    connString = $"Server={updatedHost};Port={pgPort};User Id={pgUser};Password={pgPass};Database={pgDb};";
+        var userHostDb = connUrl.Split('@');
+
+        if (userHostDb.Length == 2)
+        {
+            var userPass = userHostDb[0].Split(':');
+            var hostDb = userHostDb[1].Split('/');
+
+            if (userPass.Length == 2 && hostDb.Length == 2)
+            {
+                var pgUser = userPass[0];
+                var pgPass = userPass[1];
+                var pgHost = hostDb[0];
+                var pgDb = hostDb[1];
+
+                connString = $"Server={pgHost};Port=5432;User Id={pgUser};Password={pgPass};Database={pgDb};";
+            }
+        }
+    }
+    else
+    {
+        // Parse connection URL to connection string for Npgsql
+        connUrl = connUrl.Replace("postgres://", string.Empty);
+        var pgUserPass = connUrl.Split("@")[0];
+        var pgHostPortDb = connUrl.Split("@")[1];
+        var pgHostPort = pgHostPortDb.Split("/")[0];
+        var pgDb = pgHostPortDb.Split("/")[1];
+        var pgUser = pgUserPass.Split(":")[0];
+        var pgPass = pgUserPass.Split(":")[1];
+        var pgHost = pgHostPort.Split(":")[0];
+        var pgPort = pgHostPort.Split(":")[1];
+        var updatedHost = pgHost.Replace("flycast", "internal");
+
+        connString = $"Server={updatedHost};Port={pgPort};User Id={pgUser};Password={pgPass};Database={pgDb};";
+    }
 }
 builder.Services.AddDbContext<DataContext>(opt =>
 {
