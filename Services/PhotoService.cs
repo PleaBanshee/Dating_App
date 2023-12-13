@@ -9,16 +9,32 @@ namespace Dating_App.Services
     public class PhotoService : IPhotoService
     {
         private readonly Cloudinary _cloudinary;
+        private readonly IHostEnvironment _env;
 
         // Inject cloudinary settings
-        public PhotoService(IOptions<CloudinarySettings> config)
+        public PhotoService(IOptions<CloudinarySettings> config, IHostEnvironment env)
         {
-            var account = new Account
-            (
-                config.Value.CloudName,
-                config.Value.ApiKey,
-                config.Value.ApiSecret
-            );
+            _env = env;
+            var account = new Account();
+
+            if (_env.IsDevelopment()) 
+            {
+                account = new Account
+                (
+                    config.Value.CloudName,
+                    config.Value.ApiKey,
+                    config.Value.ApiSecret
+                );
+            }
+            else
+            {
+                account = new Account
+                {
+                    Cloud = Environment.GetEnvironmentVariable("CloudName"),
+                    ApiKey = Environment.GetEnvironmentVariable("ApiKey"),
+                    ApiSecret = Environment.GetEnvironmentVariable("ApiSecret")
+                };
+            }
 
             _cloudinary = new Cloudinary(account);
         }
