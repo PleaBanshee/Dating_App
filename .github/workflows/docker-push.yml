@@ -6,8 +6,6 @@ on:
   push:
     branches:
       - "main"
-env:
-  FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }} # Github action secret
 jobs:
   docker:
     runs-on: ubuntu-latest
@@ -31,6 +29,4 @@ jobs:
     name: Deploy app
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: superfly/flyctl-actions/setup-flyctl@master
-      - run: flyctl deploy --remote-only
+      - run: docker pull pleabanshee/dating_app:latest && docker run -d --name dating_app -p 8080:80 pleabanshee/dating_app:latest
