@@ -54,7 +54,8 @@ namespace Dating_App.Controllers
         private async Task<bool> UserExists(string username)
         {
             // AnyAsync: returns a boolean value if the user exists
-            return await _userManager.Users.AnyAsync(x => x.UserName == username.ToLower());
+            var user = await _userManager.Users.SingleOrDefaultAsync(x => x.UserName == username.ToLower());
+            return user != null;
         }
 
         [HttpPost("login")] // api/account/login?username={username}&password={password}
